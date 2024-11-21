@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.0.103:3306/educationsystemdb
+#    url: jdbc:mariadb://host.docker.internal:3306/educationsystemdb
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none                                 # 데이터베이스 스키마 자동 생성 전략 (none, validate, update, create, create-drop)
+    show-sql: true                                         # SQL 쿼리 로그 출력 여부
+    properties:
+      hibernate:
+        format_sql: true                                   # SQL 쿼리 포맷팅 여부
+  server:
+    port: 8080                                             # 서버 포트 설정
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG                            # Hibernate SQL 로깅 레벨
+      org.hibernate.type.descriptor.sql.BasicTypeDescriptor: TRACE  # Hibernate의 SQL 타입 디스크립터 로깅 레벨
+      org.springframework.security: TRACE
+  jwt:
+    secret: mySuperSecretKey
+# 추가 설정 예시
+# spring:
+#   security:
+#     user:
+#       name: your_username
+#       password: your_password
