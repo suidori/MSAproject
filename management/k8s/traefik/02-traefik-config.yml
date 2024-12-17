@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-config
+  namespace: default
+data:
+  traefik.yml: |
+    api:
+      dashboard: true
+      insecure: true
+    entryPoints:
+      web:
+        address: ":80"
+      dashboard:
+        address: ":8081"
+      user-service:
+        address: ":8100"
+    providers:
+      kubernetesIngress: {}
+    log:
+      level: DEBUG

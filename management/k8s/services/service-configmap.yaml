@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: msa-k8s-configmap
+data:
+  token_expiration_time: "86400000"
+  token_secret: "APPLE_YOUR_SECRETKEY_20240522_FOR_SPRING_CLOUD_LOGIN_#1"
+
+  user-service-port: "8100"
+
+  spring-datasource-url: "jdbc:mariadb://user-service-mariadb-service.maria-name.svc.cluster.local:3306/userDB?serverTimezone=Asia/Seoul"
+  spring-datasource-username: "root"

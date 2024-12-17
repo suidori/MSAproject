@@ -1,0 +1,29 @@
+server:
+  port: 8100 # 서비스 포트 번호
+
+spring:
+  application:
+    name: user-service # 애플리케이션 이름
+  datasource:
+    url: jdbc:mariadb://localhost:3306/userDB?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # 자동 스키마 업데이트 설정 (운영 환경에서는 validate로 변경 추천)
+    show-sql: true # SQL 쿼리 로깅
+  jwt:
+    secret: "greenComArtMSAProjectTeamOneSecretKey071516" # JWT 비밀 키
+    expiration: 86400000 # JWT 만료 시간 (밀리초 단위, 여기서는 24시간)
+
+security:
+  ignored:
+    paths: /swagger-ui/**, /v3/api-docs/** # Swagger와 관련된 경로 무시
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG # Hibernate SQL 디버깅
+
+swagger:
+  enabled: true # Swagger 활성화
