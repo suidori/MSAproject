@@ -1,0 +1,47 @@
+server:
+  port: 8110
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG                            # Hibernate SQL 로깅 레벨
+    org.hibernate.type.descriptor.sql.BasicTypeDescriptor: TRACE  # Hibernate의 SQL 타입 디스크립터 로깅 레벨
+    org.springframework.security: TRACE
+
+spring:
+#  application:
+#    name: MSAfreeboard
+  # spring 관련 설정이 이곳에 들어갑니다.
+
+#  main:
+#    banner-mode: off
+#  logging:
+#    level:
+#      org.springframework: DEBUG
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.0.69:3306/announceDB?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+#    initialization-mode: always # 애플리케이션 시작 시 data.sql 실행
+  jpa:
+    hibernate:
+      ddl-auto: none
+#      ddl=auto: update
+#      ddl-auto: none
+    properties:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+#      hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect  # Hibernate의 Dialect 설정 (MariaDB용)
+#      hibernate.format_sql: true
+    show-sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+  servlet:           # Multipart 파일 업로드 설정
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB  # 요청 최대 크기
+      file-size-threshold: 0  # 파일 크기 임계값
+      enabled: true
+
+  jwt:
+    secret: mySuperSecretKey  # JWT 비밀 키 설정
