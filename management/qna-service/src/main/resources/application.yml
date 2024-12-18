@@ -26,9 +26,9 @@ spring:
 #    initialization-mode: always # 애플리케이션 시작 시 data.sql 실행
   jpa:
     hibernate:
-#      ddl-auto: create
+      ddl-auto: create
 #      ddl=auto: update
-      ddl-auto: none
+#      ddl-auto: none
     properties:
       database-platform: org.hibernate.dialect.MariaDB103Dialect
 #      hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect  # Hibernate의 Dialect 설정 (MariaDB용)
