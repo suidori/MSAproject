@@ -11,12 +11,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="eurekaServer" target="17" />
-      <module name="eurekaServer.main" target="17" />
-      <module name="eurekaServer.test" target="17" />
-      <module name="userService" target="17" />
-      <module name="userService.main" target="17" />
-      <module name="userService.test" target="17" />
+      <module name="user-service" target="17" />
+      <module name="user-service.main" target="17" />
+      <module name="user-service.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
