@@ -3,10 +3,10 @@ package com.green.qna.Service;
 import com.green.qna.Dto.QnACommentReqDto;
 import com.green.qna.Dto.QnAboardReqDto;
 import com.green.qna.Entity.QnAboard;
-import com.green.qna.Entity.User;
+//import com.green.qna.Entity.User;
 //import com.green.qna.Login.LoginUserDetails;
 import com.green.qna.Repository.QnAboardRepository;
-import com.green.qna.Repository.UserRepository;
+//import com.green.qna.Repository.UserRepository;
 import com.green.qna.Response.QnAboardPageResponseDto;
 import com.green.qna.Response.QnAboardResponseDto;
 import com.green.qna.error.BizException;
@@ -30,7 +30,7 @@ public class QnAboardService {
 
     private final ModelMapper modelMapper;
     private final QnAboardRepository qnAboardRepository;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
 
     public QnAboard save( QnAboardReqDto qnAboardReqDto) {
 
@@ -45,13 +45,20 @@ public class QnAboardService {
     }
 
     
-    public QnAboardPageResponseDto qnAstudentPage(Pageable pageable) {
+    public QnAboardPageResponseDto qnAPage(Pageable pageable) {
 
         Page<QnAboard> page = qnAboardRepository.findAll(pageable);
 
         return mapToQuestionResponsePageDto(page);
     }
 
+
+    public QnAboardPageResponseDto qnAstudentPage(String user, Pageable pageable){
+
+        Page<QnAboard> page = qnAboardRepository.findByUser(user,pageable);
+
+        return mapToQuestionResponsePageDto(page);
+    }
 
 
     private QnAboardPageResponseDto mapToQuestionResponsePageDto(Page<QnAboard> page) {
@@ -87,10 +94,12 @@ private QnAboardResponseDto convertToQnAboardResponseDto(QnAboard qnAboard) {
     }
     
     // 사용자 정보 설정 - Optional 대신 일반 null 체크 사용
-    dto.setUser(qnAboard.getUser() != null ? qnAboard.getUser().getName() : "탈퇴한 회원");
+//    dto.setUser(qnAboard.getUser() != null ? qnAboard.getUser().getName() : "탈퇴한 회원");
     
     return dto;
 }
+
+
 
     public QnAboardResponseDto viewPage(long idx) {
 
@@ -100,7 +109,7 @@ private QnAboardResponseDto convertToQnAboardResponseDto(QnAboard qnAboard) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
         qnaboardResponseDto.setWdate(dateTimeFormatter.format(qnAboard.getWdate()));
 
-        qnaboardResponseDto.setUser((qnAboard.getUser() != null) ? qnAboard.getUser().getName() : "탈퇴한 회원");
+//        qnaboardResponseDto.setUser((qnAboard.getUser() != null) ? qnAboard.getUser().getName() : "탈퇴한 회원");
 //        qnaboardResponseDto.setLecture((announce.getLecture()!=null)? announce.getLecture().getTitle() : "전체");
 
         return qnaboardResponseDto;

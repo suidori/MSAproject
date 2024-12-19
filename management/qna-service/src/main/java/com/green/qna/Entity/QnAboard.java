@@ -26,7 +26,7 @@ public class QnAboard {
 
     private LocalDateTime wdate;
 
-    private int views;
+//    private int views;
 
     @Enumerated(EnumType.STRING)
     private QnAstate qnastate;
@@ -34,17 +34,17 @@ public class QnAboard {
     @Enumerated(EnumType.STRING)
     private QnASecret qnasecret;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "useridx")
-    private User user;
+    private String user;
 
     private String token;
 
     private String comment;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "commentusername")
-    private User commentuser; //
+    private String commentuser; //
 
 
 }

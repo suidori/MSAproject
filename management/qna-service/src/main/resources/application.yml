@@ -45,5 +45,6 @@ spring:
 
   jwt:
     secret: mySuperSecretKey  # JWT 비밀 키 설정
-
+#오픈페인 주소 지명
 user-service: http://greencomart.kro.kr:716/
+

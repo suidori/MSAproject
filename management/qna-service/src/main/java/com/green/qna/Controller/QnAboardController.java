@@ -12,6 +12,7 @@ import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("QnA")
 @RequiredArgsConstructor
 @CrossOrigin
+@Slf4j
 public class QnAboardController {
 
     private final QnAboardRepository qnAboardRepository;
@@ -30,18 +32,24 @@ public class QnAboardController {
     public ResponseEntity<QnAboardPageResponseDto> test(String token,
                                                @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
                                                @RequestParam(name = "size", defaultValue = "10") int size) {
-        System.out.println(token);
+        System.out.println("프론트에서 준 token "+token);
 
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer "+token);
 
+        System.out.println("토큰으로 불러온 유저 정보 "+userReqDto);
+
         if(userReqDto.getRole().equals("ROLE_STUDENT")){
             //token 가지고... 학생일때는 가져올게 없는데.. 자기꺼만 select..
-            return ResponseEntity.ok(null);
+
+            QnAboardPageResponseDto studentQnAList = 
+            qnAboardService.qnAstudentPage(userReqDto.getIdx(), PageUtil.getPageable(pageNum, size));
+        return ResponseEntity.ok(studentQnAList);
         }
+
         else{
             QnAboardPageResponseDto qnAboardPageResponseDto =
-                    qnAboardService.qnAstudentPage(PageUtil.getPageable(pageNum, size));
+                    qnAboardService.qnAPage(PageUtil.getPageable(pageNum, size));
             return ResponseEntity.ok(qnAboardPageResponseDto);
         }
     }

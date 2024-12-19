@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class UserReqDto {
 
-    private Long idx;
+    private String idx;
 
-    private String userid;
+    private String useridx;
 
     private String password;
 
