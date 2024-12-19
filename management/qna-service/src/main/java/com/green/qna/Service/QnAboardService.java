@@ -2,6 +2,8 @@ package com.green.qna.Service;
 
 import com.green.qna.Dto.QnACommentReqDto;
 import com.green.qna.Dto.QnAboardReqDto;
+import com.green.qna.Dto.UserReqDto;
+import com.green.qna.Entity.QnAState;
 import com.green.qna.Entity.QnAboard;
 //import com.green.qna.Entity.User;
 //import com.green.qna.Login.LoginUserDetails;
@@ -11,6 +13,7 @@ import com.green.qna.Response.QnAboardPageResponseDto;
 import com.green.qna.Response.QnAboardResponseDto;
 import com.green.qna.error.BizException;
 import com.green.qna.error.ErrorCode;
+import com.green.qna.feign.UserFeignClient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +33,15 @@ public class QnAboardService {
 
     private final ModelMapper modelMapper;
     private final QnAboardRepository qnAboardRepository;
+    private final UserFeignClient userFeignClient;
 //    private final UserRepository userRepository;
 
-    public QnAboard save(String token, QnAboardReqDto qnAboardReqDto) {
+    public QnAboard save(String token, QnAboardReqDto qnAboardReqDto, UserReqDto userReqDto) {
         QnAboard qnAboard = modelMapper.map(qnAboardReqDto, QnAboard.class);
+        qnAboard.setName(userReqDto.getName());
+        qnAboard.setUserid(userReqDto.getUserid());
+        qnAboard.setQnastate(QnAState.WAITING);
+        qnAboard.setRole(userReqDto.getRole());
         qnAboard.setWdate(LocalDateTime.now());
         qnAboard.setToken(token);
 
@@ -52,7 +60,11 @@ public class QnAboardService {
 
     public QnAboardPageResponseDto qnAstudentPage(String token, Pageable pageable) {
 
-        Page<QnAboard> page = qnAboardRepository.findByToken(token, pageable);
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+        String userid = userReqDto.getUserid();
+
+        Page<QnAboard> page = qnAboardRepository.findByuserid(userid, pageable);
 
         return mapToQuestionResponsePageDto(page);
     }
@@ -112,12 +124,22 @@ public class QnAboardService {
 
     }
 
-    public QnAboard addComment(long idx, @Valid QnACommentReqDto commentReqDto) {
+    public QnAboard addComment(Long idx ,String token,
+                               @Valid QnACommentReqDto commentReqDto) {
+
+        System.out.println("매니저 토큰값"+token);
+
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+        System.out.println("매니저 계정"+ userReqDto);
 
         QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new RuntimeException("QnAboard not found"));
 
         // 댓글 내용 설정
         qnAboard.setComment(commentReqDto.getComment());
+        qnAboard.setCommentuser(userReqDto.getUserid());
+
+        System.out.println(qnAboard);
 
         // 댓글 작성자 설정
 //        User commentUser = userRepository.findById(loginUserDetails.getIdx())

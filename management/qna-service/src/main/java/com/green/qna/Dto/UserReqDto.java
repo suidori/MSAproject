@@ -1,6 +1,6 @@
 package com.green.qna.Dto;
 
-import com.green.qna.Entity.Role;
+//import com.green.qna.Entity.Role;
 import lombok.Data;
 
 @Data
@@ -8,7 +8,7 @@ public class UserReqDto {
 
     private String idx;
 
-    private String useridx;
+    private String userid;
 
     private String password;
 
@@ -18,7 +18,7 @@ public class UserReqDto {
 
     private String email;
 
-    private Role role;
+    private String role;
 
     private boolean accept;
 

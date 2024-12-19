@@ -23,4 +23,8 @@ public class QnAboardReqDto {
     private String commentuser;
 
     private String name;
+
+    private String userid;
+
+    private String role;
 }

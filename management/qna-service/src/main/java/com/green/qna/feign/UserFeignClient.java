@@ -12,4 +12,5 @@ public interface UserFeignClient {
     @GetMapping("user/getuser")
     UserReqDto getUser(@RequestHeader("Authorization") String authorization);
 
+
 }

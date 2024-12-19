@@ -34,6 +34,11 @@ public class QnAboardController {
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
 
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
@@ -55,31 +60,53 @@ public class QnAboardController {
     public ResponseEntity<QnAboard> save(
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
+
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        System.out.println(token);
+
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
-        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
+        System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
+
+//        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
+        QnAboard qnAboard = qnAboardService.save(token ,qnAboardReqDto ,userReqDto);
         return ResponseEntity.ok(qnAboard);
     }
 
 
     @GetMapping("view/{idx}")
-    public ResponseEntity<QnAboardResponseDto> findOne(@PathVariable(name = "idx") long idx) {
+    public ResponseEntity<QnAboardResponseDto> findOne(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable(name = "idx") long idx) {
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         QnAboardResponseDto qnAboardResponseDto = qnAboardService.viewPage(idx);
         return ResponseEntity.ok(qnAboardResponseDto);
     }
 
-    @PutMapping("/comment/{idx}")
+    @PostMapping("/comment/{idx}")
     public ResponseEntity<QnAboard> addComment(
+            String token,
             @PathVariable(name = "idx") long idx,
             @Valid @RequestBody QnACommentReqDto commentReqDto) {
-//        if (loginUserDetails == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//
-//        QnAboard updatedQnAboard = qnAboardService.addComment(idx, loginUserDetails, commentReqDto);
 
-//        return ResponseEntity.ok(updatedQnAboard);
-        return ResponseEntity.ok(null);
+
+        System.out.println("댓글 토큰"+ token);
+
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+
+        QnAboard qnAboard = qnAboardService.addComment(idx, token,  commentReqDto);
+
+        return ResponseEntity.ok(qnAboard);
+
     }
 
 

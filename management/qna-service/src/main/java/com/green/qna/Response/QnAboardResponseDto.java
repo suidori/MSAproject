@@ -20,6 +20,8 @@ public class QnAboardResponseDto {
 
     private String Wdate;
     private String name;
+    private String userid;
+    private String role;
     private String comment;
     private String commentuser;
 }

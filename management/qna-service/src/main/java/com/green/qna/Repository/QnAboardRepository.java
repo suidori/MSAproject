@@ -16,4 +16,5 @@ public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
     
     Page<QnAboard> findByToken(String token, Pageable pageable);
 
+    Page<QnAboard> findByuserid(String userid, Pageable pageable);
 }

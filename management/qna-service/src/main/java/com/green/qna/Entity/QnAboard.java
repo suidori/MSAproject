@@ -34,7 +34,11 @@ public class QnAboard {
 
     private String comment;
 
+    private String userid;
+
     private String name;
+
+    private String role;
 
 //    @ManyToOne
     @JoinColumn(name = "commentusername")
