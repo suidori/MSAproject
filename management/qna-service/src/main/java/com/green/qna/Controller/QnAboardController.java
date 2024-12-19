@@ -30,24 +30,21 @@ public class QnAboardController {
 
     @GetMapping("/list")
     public ResponseEntity<QnAboardPageResponseDto> test(String token,
-                                               @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-                                               @RequestParam(name = "size", defaultValue = "10") int size) {
-        System.out.println("프론트에서 준 token "+token);
+                                                        @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
+        System.out.println("프론트에서 준 token " + token);
 
         // 선생이거나 매니저면.. 모든 select...
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer "+token);
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
-        System.out.println("토큰으로 불러온 유저 정보 "+userReqDto);
+        System.out.println("토큰으로 불러온 유저 정보 " + userReqDto);
 
-        if(userReqDto.getRole().equals("ROLE_STUDENT")){
+        if (userReqDto.getRole().equals("ROLE_STUDENT")) {
             //token 가지고... 학생일때는 가져올게 없는데.. 자기꺼만 select..
-
-            QnAboardPageResponseDto studentQnAList = 
-            qnAboardService.qnAstudentPage(userReqDto.getIdx(), PageUtil.getPageable(pageNum, size));
-        return ResponseEntity.ok(studentQnAList);
-        }
-
-        else{
+            QnAboardPageResponseDto studentQnAList =
+                    qnAboardService.qnAstudentPage(token, PageUtil.getPageable(pageNum, size));
+            return ResponseEntity.ok(studentQnAList);
+        } else {
             QnAboardPageResponseDto qnAboardPageResponseDto =
                     qnAboardService.qnAPage(PageUtil.getPageable(pageNum, size));
             return ResponseEntity.ok(qnAboardPageResponseDto);
@@ -55,13 +52,13 @@ public class QnAboardController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<QnAboard> save(@Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
-//        if(loginUserDetails==null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//        QnAboard qnAboard = qnAboardService.save(loginUserDetails, qnAboardReqDto);
-//        return ResponseEntity.ok(qnAboard);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<QnAboard> save(
+            @RequestHeader(name = "Authorization") String token,
+            @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
+        return ResponseEntity.ok(qnAboard);
     }
 
 
@@ -73,8 +70,8 @@ public class QnAboardController {
 
     @PutMapping("/comment/{idx}")
     public ResponseEntity<QnAboard> addComment(
-                                               @PathVariable(name = "idx") long idx,
-                                               @Valid @RequestBody QnACommentReqDto commentReqDto) {
+            @PathVariable(name = "idx") long idx,
+            @Valid @RequestBody QnACommentReqDto commentReqDto) {
 //        if (loginUserDetails == null) {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 //        }

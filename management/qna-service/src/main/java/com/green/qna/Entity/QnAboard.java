@@ -26,21 +26,15 @@ public class QnAboard {
 
     private LocalDateTime wdate;
 
-//    private int views;
-
     @Enumerated(EnumType.STRING)
-    private QnAstate qnastate;
-
-    @Enumerated(EnumType.STRING)
-    private QnASecret qnasecret;
-
-//    @ManyToOne
-    @JoinColumn(name = "useridx")
-    private String user;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'WAITING'")
+    private QnAState qnastate;
 
     private String token;
 
     private String comment;
+
+    private String name;
 
 //    @ManyToOne
     @JoinColumn(name = "commentusername")

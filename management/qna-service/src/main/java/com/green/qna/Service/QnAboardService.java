@@ -32,19 +32,16 @@ public class QnAboardService {
     private final QnAboardRepository qnAboardRepository;
 //    private final UserRepository userRepository;
 
-    public QnAboard save( QnAboardReqDto qnAboardReqDto) {
-
-//        User user = userRepository.findByIdx(loginUserDetails.getIdx()).orElseThrow(()->new BizException(ErrorCode.USER_NOT_FOUND));
-
+    public QnAboard save(String token, QnAboardReqDto qnAboardReqDto) {
         QnAboard qnAboard = modelMapper.map(qnAboardReqDto, QnAboard.class);
         qnAboard.setWdate(LocalDateTime.now());
+        qnAboard.setToken(token);
 
-//        qnAboard.setUser(user);
         qnAboardRepository.save(qnAboard);
         return qnAboard;
     }
 
-    
+
     public QnAboardPageResponseDto qnAPage(Pageable pageable) {
 
         Page<QnAboard> page = qnAboardRepository.findAll(pageable);
@@ -53,9 +50,9 @@ public class QnAboardService {
     }
 
 
-    public QnAboardPageResponseDto qnAstudentPage(String user, Pageable pageable){
+    public QnAboardPageResponseDto qnAstudentPage(String token, Pageable pageable) {
 
-        Page<QnAboard> page = qnAboardRepository.findByUser(user,pageable);
+        Page<QnAboard> page = qnAboardRepository.findByToken(token, pageable);
 
         return mapToQuestionResponsePageDto(page);
     }
@@ -78,27 +75,26 @@ public class QnAboardService {
         responseDto.setTotalElements(page.getTotalElements());
         responseDto.setTotalPages(page.getTotalPages());
         responseDto.setSize(page.getSize());
-    
+
         return responseDto;
     }
-    
+
 
     // QnAboard를 QnAboardResponseDto로 변환하는 메서드 분리
-private QnAboardResponseDto convertToQnAboardResponseDto(QnAboard qnAboard) {
-    QnAboardResponseDto dto = modelMapper.map(qnAboard, QnAboardResponseDto.class);
-    
-    // 날짜 포맷팅
-    if (qnAboard.getWdate() != null) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
-        dto.setWdate(qnAboard.getWdate().format(formatter));
-    }
-    
-    // 사용자 정보 설정 - Optional 대신 일반 null 체크 사용
-//    dto.setUser(qnAboard.getUser() != null ? qnAboard.getUser().getName() : "탈퇴한 회원");
-    
-    return dto;
-}
+    private QnAboardResponseDto convertToQnAboardResponseDto(QnAboard qnAboard) {
+        QnAboardResponseDto dto = modelMapper.map(qnAboard, QnAboardResponseDto.class);
 
+        // 날짜 포맷팅
+        if (qnAboard.getWdate() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+            dto.setWdate(qnAboard.getWdate().format(formatter));
+        }
+
+        // 사용자 정보 설정 - Optional 대신 일반 null 체크 사용
+//    dto.setUser(qnAboard.getUser() != null ? qnAboard.getUser().getName() : "탈퇴한 회원");
+
+        return dto;
+    }
 
 
     public QnAboardResponseDto viewPage(long idx) {
@@ -132,5 +128,5 @@ private QnAboardResponseDto convertToQnAboardResponseDto(QnAboard qnAboard) {
         // 댓글이 추가된 게시글 저장
         return qnAboardRepository.save(qnAboard);
     }
-    }
+}
 

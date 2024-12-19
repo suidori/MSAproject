@@ -2,8 +2,7 @@ package com.green.qna.Dto;
 
 
 
-import com.green.qna.Entity.QnASecret;
-import com.green.qna.Entity.QnAstate;
+import com.green.qna.Entity.QnAState;
 //import com.green.qna.Entity.User;
 import lombok.Data;
 
@@ -17,13 +16,11 @@ public class QnAboardReqDto {
 
     private String type;
 
-    private QnAstate qnAstate;
-
-    private QnASecret qnASecret;
+    private QnAState qnAState;
 
     private String comment;
 
     private String commentuser;
 
-
+    private String name;
 }

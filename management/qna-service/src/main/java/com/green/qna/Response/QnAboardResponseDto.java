@@ -1,8 +1,7 @@
 package com.green.qna.Response;
 
 
-import com.green.qna.Entity.QnASecret;
-import com.green.qna.Entity.QnAstate;
+import com.green.qna.Entity.QnAState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +15,11 @@ public class QnAboardResponseDto {
     private String title;
     private String content;
     private String type;
-    private QnAstate qnastate;
-    private QnASecret qnASecret;
+
+    private QnAState qnaState;
 
     private String Wdate;
-    private String user;
+    private String name;
     private String comment;
     private String commentuser;
 }
