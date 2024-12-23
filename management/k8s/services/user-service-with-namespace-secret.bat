@@ -1,6 +1,8 @@
 @echo off
 
 kubectl create namespace msa-namespace
+kubectl apply -f mariadb-secret.yaml
+
 kubectl apply -f user-service-deployment.yaml
 kubectl apply -f user-service-service.yaml
 

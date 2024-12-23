@@ -5,10 +5,11 @@ spring:
   application:
     name: user-service # 애플리케이션 이름
   datasource:
-    url: jdbc:mariadb://192.168.0.30:3306/testDB?serverTimezone=Asia/Seoul
-    username: myuser
-    password: greencom
+    url: ${DB_URL}  # 환경 변수에서 DB_URL을 사용
+    username: ${DB_USERNAME}  # 환경 변수에서 DB_USERNAME을 사용
+    password: ${DB_PASSWORD}  # 환경 변수에서 DB_PASSWORD을 사용
     driver-class-name: org.mariadb.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update # 자동 스키마 업데이트 설정 (운영 환경에서는 validate로 변경 추천)

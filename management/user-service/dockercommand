@@ -1,8 +1,8 @@
 #이미지 삭제
-docker rmi suidori/user-service:msa.k8.02
+docker rmi suidori/user-service:msa.k8.03
 
 #이미지 생성
-docker build -t suidori/user-service:msa.k8.03 .
+docker build -t suidori/user-service:msa.k8.04 .
 
 #이미지 dockerhub 업로드 명령어
-docker push suidori/user-service:msa.k8.03
+docker push suidori/user-service:msa.k8.04
