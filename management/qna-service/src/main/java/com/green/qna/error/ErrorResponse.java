@@ -1,4 +1,4 @@
-package com.green.qna.Response;
+package com.green.qna.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

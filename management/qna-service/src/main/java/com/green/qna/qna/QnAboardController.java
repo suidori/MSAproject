@@ -1,13 +1,8 @@
-package com.green.qna.Controller;
+package com.green.qna.qna;
 
-import com.green.qna.Dto.QnACommentReqDto;
-import com.green.qna.Dto.QnAboardReqDto;
+import com.green.qna.comment.CommentReqDto;
 import com.green.qna.Dto.UserReqDto;
-import com.green.qna.Entity.QnAboard;
-import com.green.qna.Repository.QnAboardRepository;
-import com.green.qna.Response.QnAboardPageResponseDto;
-import com.green.qna.Response.QnAboardResponseDto;
-import com.green.qna.Service.QnAboardService;
+import com.green.qna.qna.entity.QnAboard;
 import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
 import jakarta.validation.Valid;
@@ -28,6 +23,9 @@ public class QnAboardController {
     private final QnAboardService qnAboardService;
     private final UserFeignClient userFeignClient;
 
+    // 학생이면 본인이 작성한 list
+    // 매니저나 선생이면 ALL list
+
     @GetMapping("/list")
     public ResponseEntity<QnAboardPageResponseDto> test(String token,
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
@@ -37,7 +35,6 @@ public class QnAboardController {
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
 
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
@@ -88,26 +85,5 @@ public class QnAboardController {
         QnAboardResponseDto qnAboardResponseDto = qnAboardService.viewPage(idx);
         return ResponseEntity.ok(qnAboardResponseDto);
     }
-
-    @PostMapping("/comment/{idx}")
-    public ResponseEntity<QnAboard> addComment(
-            String token,
-            @PathVariable(name = "idx") long idx,
-            @Valid @RequestBody QnACommentReqDto commentReqDto) {
-
-
-        System.out.println("댓글 토큰"+ token);
-
-        if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-
-        QnAboard qnAboard = qnAboardService.addComment(idx, token,  commentReqDto);
-
-        return ResponseEntity.ok(qnAboard);
-
-    }
-
 
 }

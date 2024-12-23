@@ -1,4 +1,4 @@
-package com.green.qna.Entity;
+package com.green.qna.qna.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,17 +32,12 @@ public class QnAboard {
 
     private String token;
 
-    private String comment;
-
     private String userid;
 
     private String name;
 
     private String role;
 
-//    @ManyToOne
-    @JoinColumn(name = "commentusername")
-    private String commentuser; //
-
+    private String uuid;
 
 }

@@ -1,7 +1,5 @@
-package com.green.qna.Controller;
+package com.green.qna.error;
 
-import com.green.qna.error.BizException;
-import com.green.qna.Response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class ErrorController {
+public class ErrorControllerHandler {
 
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponse> mException(BizException e){

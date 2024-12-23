@@ -1,8 +1,8 @@
-package com.green.qna.Dto;
+package com.green.qna.qna;
 
 
 
-import com.green.qna.Entity.QnAState;
+import com.green.qna.qna.entity.QnAState;
 //import com.green.qna.Entity.User;
 import lombok.Data;
 

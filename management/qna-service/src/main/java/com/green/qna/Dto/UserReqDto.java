@@ -10,6 +10,8 @@ public class UserReqDto {
 
     private String userid;
 
+    private String uuid;
+
     private String password;
 
     private String name;

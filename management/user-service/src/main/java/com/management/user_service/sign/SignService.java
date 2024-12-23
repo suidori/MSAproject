@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,8 @@ public class SignService {
     public String signIn(LoginReqDto loginReqDto){
         User user = userRepository.findByUserid(loginReqDto.getUserid())
                 .orElseThrow(() -> new UsernameNotFoundException("틀린 아이디"));
+
+        user.setUuid(UUID.randomUUID().toString());
 
         if(!user.getRole().equals(loginReqDto.getRole())){
             throw new BadCredentialsException("올바른 역할로 시도해 주세요.");

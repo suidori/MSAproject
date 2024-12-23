@@ -1,16 +1,12 @@
-package com.green.qna.Service;
+package com.green.qna.qna;
 
-import com.green.qna.Dto.QnACommentReqDto;
-import com.green.qna.Dto.QnAboardReqDto;
+import com.green.qna.comment.CommentReqDto;
 import com.green.qna.Dto.UserReqDto;
-import com.green.qna.Entity.QnAState;
-import com.green.qna.Entity.QnAboard;
+import com.green.qna.qna.entity.QnAState;
+import com.green.qna.qna.entity.QnAboard;
 //import com.green.qna.Entity.User;
 //import com.green.qna.Login.LoginUserDetails;
-import com.green.qna.Repository.QnAboardRepository;
 //import com.green.qna.Repository.UserRepository;
-import com.green.qna.Response.QnAboardPageResponseDto;
-import com.green.qna.Response.QnAboardResponseDto;
 import com.green.qna.error.BizException;
 import com.green.qna.error.ErrorCode;
 import com.green.qna.feign.UserFeignClient;
@@ -38,6 +34,9 @@ public class QnAboardService {
 
     public QnAboard save(String token, QnAboardReqDto qnAboardReqDto, UserReqDto userReqDto) {
         QnAboard qnAboard = modelMapper.map(qnAboardReqDto, QnAboard.class);
+
+        // uuid 오픈 페인으로 들어오면 추가 해야함.
+//        qnAboard.setUuid(userReqDto.getUuid());
         qnAboard.setName(userReqDto.getName());
         qnAboard.setUserid(userReqDto.getUserid());
         qnAboard.setQnastate(QnAState.WAITING);
@@ -122,33 +121,6 @@ public class QnAboardService {
 
         return qnaboardResponseDto;
 
-    }
-
-    public QnAboard addComment(Long idx ,String token,
-                               @Valid QnACommentReqDto commentReqDto) {
-
-        System.out.println("매니저 토큰값"+token);
-
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
-
-        System.out.println("매니저 계정"+ userReqDto);
-
-        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new RuntimeException("QnAboard not found"));
-
-        // 댓글 내용 설정
-        qnAboard.setComment(commentReqDto.getComment());
-        qnAboard.setCommentuser(userReqDto.getUserid());
-
-        System.out.println(qnAboard);
-
-        // 댓글 작성자 설정
-//        User commentUser = userRepository.findById(loginUserDetails.getIdx())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        qnAboard.setCommentuser(commentUser);
-
-        // 댓글이 추가된 게시글 저장
-        return qnAboardRepository.save(qnAboard);
     }
 }
 

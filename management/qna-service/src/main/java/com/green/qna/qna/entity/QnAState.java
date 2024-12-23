@@ -1,4 +1,4 @@
-package com.green.qna.Entity;
+package com.green.qna.qna.entity;
 
 
 

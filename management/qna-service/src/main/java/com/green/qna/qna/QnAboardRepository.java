@@ -1,13 +1,9 @@
-package com.green.qna.Repository;
+package com.green.qna.qna;
 
-import com.green.qna.Entity.QnAboard;
+import com.green.qna.qna.entity.QnAboard;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
 
