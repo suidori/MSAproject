@@ -1,9 +1,11 @@
 package com.green.qna.comment;
 
 import com.green.qna.comment.entity.CommentEntity;
+import com.green.qna.qna.entity.QnAboard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,9 +18,11 @@ public class CommentService {
         return list;
     }
 
-    public CommentEntity save(CommentReqDto commentReqDto) {
+    public CommentEntity save(CommentReqDto commentReqDto, QnAboard qnAboard) {
         CommentEntity commentEntity = CommentEntity.builder()
                .comment(commentReqDto.getComment())
+                .qnaboard(qnAboard)
+                .wdate(LocalDateTime.now())
                .build();
         return commentRepository.save(commentEntity);
     }

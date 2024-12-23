@@ -18,10 +18,6 @@ public class QnAboardReqDto {
 
     private QnAState qnAState;
 
-    private String comment;
-
-    private String commentuser;
-
     private String name;
 
     private String userid;

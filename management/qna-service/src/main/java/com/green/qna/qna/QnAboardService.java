@@ -1,5 +1,6 @@
 package com.green.qna.qna;
 
+import com.green.qna.comment.CommentRepository;
 import com.green.qna.comment.CommentReqDto;
 import com.green.qna.Dto.UserReqDto;
 import com.green.qna.qna.entity.QnAState;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,6 +34,7 @@ public class QnAboardService {
     private final QnAboardRepository qnAboardRepository;
     private final UserFeignClient userFeignClient;
 //    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public QnAboard save(String token, QnAboardReqDto qnAboardReqDto, UserReqDto userReqDto) {
         QnAboard qnAboard = modelMapper.map(qnAboardReqDto, QnAboard.class);
@@ -106,7 +110,6 @@ public class QnAboardService {
 
         return dto;
     }
-
 
     public QnAboardResponseDto viewPage(long idx) {
 

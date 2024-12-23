@@ -15,15 +15,11 @@ public class QnAboardResponseDto {
     private String title;
     private String content;
     private String type;
-
-
     private QnAState qnaState;
-
     private String Wdate;
     private String name;
     private String userid;
     private String uuid;
     private String role;
-    private String comment;
-    private String commentuser;
+
 }

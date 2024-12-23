@@ -1,10 +1,12 @@
 package com.green.qna.qna;
 
+import com.green.qna.comment.CommentRepository;
 import com.green.qna.comment.CommentReqDto;
 import com.green.qna.Dto.UserReqDto;
 import com.green.qna.qna.entity.QnAboard;
 import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class QnAboardController {
     private final QnAboardRepository qnAboardRepository;
     private final QnAboardService qnAboardService;
     private final UserFeignClient userFeignClient;
+    private final CommentRepository commentRepository;
 
     // 학생이면 본인이 작성한 list
     // 매니저나 선생이면 ALL list
@@ -84,6 +87,23 @@ public class QnAboardController {
 
         QnAboardResponseDto qnAboardResponseDto = qnAboardService.viewPage(idx);
         return ResponseEntity.ok(qnAboardResponseDto);
+    }
+
+    @DeleteMapping("delete/{idx}")
+    public ResponseEntity<QnAboard> qnadelete (@RequestParam(value = "idx") Long idx,
+                                               @RequestHeader(name = "Authorization") String token) {
+
+        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+        if(userReqDto.getUserid().equals(qnAboard.getUserid())){
+
+            if(commentRepository.findAllByqnaboard(qnAboard)!=null){
+                commentRepository.deleteByqnaboard(qnAboard);
+            }
+            qnAboardRepository.deleteById(idx);
+        }
+        return ResponseEntity.ok(qnAboard);
     }
 
 }
