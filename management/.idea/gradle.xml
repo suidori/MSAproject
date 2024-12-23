@@ -13,6 +13,14 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/ma-project" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/ma-project" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/qna-service" />
         <option name="gradleJvm" value="17" />
         <option name="modules">

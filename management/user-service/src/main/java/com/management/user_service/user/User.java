@@ -18,6 +18,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
+    private String uuid;
+
     private String userid;
 
     private String password;
@@ -32,7 +34,5 @@ public class User {
     private Role role;
 
     private boolean accept;
-
-    private Long enrolledLectureId;
 
 }

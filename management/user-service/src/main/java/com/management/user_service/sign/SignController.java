@@ -13,6 +13,7 @@ public class SignController {
 
     private final UserRepository userRepository;
     private final SignService signService;
+
     @GetMapping("/checkid")
     public boolean checkId(@RequestParam("userid") String userid){
         if(userRepository.findByUserid(userid).isPresent()){

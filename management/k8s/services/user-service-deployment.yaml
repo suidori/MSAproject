@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  namespace: msa-namespace  # 네임스페이스 지정
+spec:
+  replicas: 3  # 파드 수
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service-container
+          image: suidori/user-service:msa.k8.03 # 서비스가 사용할 도커 이미지
+          env:
+            - name: DB_URL
+              value: "jdbc:mariadb://mariadb-service.mariadb-namespace.svc.cluster.local:3306/testDB?serverTimezone=Asia/Seoul"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-password
+          ports:
+            - containerPort: 8100  # 애플리케이션 포트 (서비스가 리슨하는 포트)

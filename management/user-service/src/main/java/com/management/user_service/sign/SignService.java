@@ -5,6 +5,7 @@ import com.management.user_service.user.User;
 import com.management.user_service.user.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class SignService {
 
     public void signUp(JoinDto joinDto){
         User user = User.builder()
+                .uuid(UUID.randomUUID().toString())
                 .userid(joinDto.getUserid())
                 .password(passwordEncoder.encode(joinDto.getPassword()))
                 .name(joinDto.getName())
@@ -52,16 +56,22 @@ public class SignService {
         }
     }
 
-    private String generateJwtToken(User user) {
-        String secretkey = environment.getProperty("spring.jwt.secret");
-        System.out.println(secretkey);
+    public String generateJwtToken(User user) {
+        String secretKey = environment.getProperty("spring.jwt.secret");
+
+        if (secretKey == null || secretKey.isEmpty()) {
+            throw new IllegalArgumentException("JWT secret key is not defined");
+        }
+
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        long expirationTime = Long.parseLong(environment.getProperty("spring.jwt.expiration", "86400000"));
+
         return Jwts.builder()
-                .claim("userid", user.getUserid())
-                .claim("useridx", user.getIdx())
-                .claim("role", user.getRole().toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(SignatureAlgorithm.HS256, secretkey)
+                .subject(user.getUuid())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), Jwts.SIG.HS256)
                 .compact();
     }
+
 }

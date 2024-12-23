@@ -5,9 +5,9 @@ spring:
   application:
     name: user-service # 애플리케이션 이름
   datasource:
-    url: jdbc:mariadb://192.168.0.103:3306/userDB?serverTimezone=Asia/Seoul
-    username: root
-    password: 1234
+    url: jdbc:mariadb://192.168.0.30:3306/testDB?serverTimezone=Asia/Seoul
+    username: myuser
+    password: greencom
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
