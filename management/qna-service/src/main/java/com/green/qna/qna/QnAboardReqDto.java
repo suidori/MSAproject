@@ -16,11 +16,11 @@ public class QnAboardReqDto {
 
     private String type;
 
-    private QnAState qnAState;
-
-    private String name;
-
-    private String userid;
-
-    private String role;
+//    private QnAState qnAState;
+//
+//    private String name;
+//
+//    private String userid;
+//
+//    private String role;
 }

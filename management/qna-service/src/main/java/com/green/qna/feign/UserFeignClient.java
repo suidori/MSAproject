@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name="user-service", url="${user-service}")
 public interface UserFeignClient {
 
+    //갯유저 생성시 주소 바꿀것
     @GetMapping("user/getuser")
     UserReqDto getUser(@RequestHeader("Authorization") String authorization);
 

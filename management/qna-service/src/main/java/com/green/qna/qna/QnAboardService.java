@@ -37,6 +37,7 @@ public class QnAboardService {
     private final CommentRepository commentRepository;
 
     public QnAboard save(String token, QnAboardReqDto qnAboardReqDto, UserReqDto userReqDto) {
+
         QnAboard qnAboard = modelMapper.map(qnAboardReqDto, QnAboard.class);
 
         // uuid 오픈 페인으로 들어오면 추가 해야함.
@@ -46,7 +47,8 @@ public class QnAboardService {
         qnAboard.setQnastate(QnAState.WAITING);
         qnAboard.setRole(userReqDto.getRole());
         qnAboard.setWdate(LocalDateTime.now());
-        qnAboard.setToken(token);
+//        qnAboard.setToken(token);
+        qnAboard.setUuid(userReqDto.getUuid());
 
         qnAboardRepository.save(qnAboard);
         return qnAboard;

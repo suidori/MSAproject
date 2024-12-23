@@ -7,6 +7,7 @@ import com.green.qna.error.ErrorCode;
 import com.green.qna.feign.UserFeignClient;
 import com.green.qna.qna.QnAboardRepository;
 import com.green.qna.qna.QnAboardReqDto;
+import com.green.qna.qna.entity.QnAState;
 import com.green.qna.qna.entity.QnAboard;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,8 @@ public class CommentController {
         System.out.println("패치밸리어블"+ qnAboardIdx);
 
         QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
+
+        qnAboard.setQnastate(QnAState.IN_PROGRESS);
 
         return ResponseEntity.ok(commentService.save(commentReqDto, qnAboard));
     }

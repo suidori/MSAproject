@@ -30,7 +30,7 @@ public class QnAboard {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'WAITING'")
     private QnAState qnastate;
 
-    private String token;
+//    private String token;
 
     private String userid;
 

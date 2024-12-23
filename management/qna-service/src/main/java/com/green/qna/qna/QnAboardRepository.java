@@ -11,7 +11,7 @@ public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
     // 기본적인 페이징 처리
     Page<QnAboard> findAll(Pageable pageable);
     
-    Page<QnAboard> findByToken(String token, Pageable pageable);
+
 
     Page<QnAboard> findByuserid(String userid, Pageable pageable);
 

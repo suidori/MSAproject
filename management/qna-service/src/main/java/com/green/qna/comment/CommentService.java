@@ -24,6 +24,7 @@ public class CommentService {
                 .qnaboard(qnAboard)
                 .wdate(LocalDateTime.now())
                .build();
+
         return commentRepository.save(commentEntity);
     }
 

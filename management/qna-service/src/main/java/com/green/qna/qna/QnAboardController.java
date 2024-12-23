@@ -29,6 +29,7 @@ public class QnAboardController {
     // 학생이면 본인이 작성한 list
     // 매니저나 선생이면 ALL list
 
+    //토큰이 아니라 uuid로 변경할것...
     @GetMapping("/list")
     public ResponseEntity<QnAboardPageResponseDto> test(String token,
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
