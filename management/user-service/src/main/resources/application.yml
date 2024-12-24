@@ -5,9 +5,9 @@ spring:
   application:
     name: user-service # 애플리케이션 이름
   datasource:
-    url: ${DB_URL}  # 환경 변수에서 DB_URL을 사용
-    username: ${DB_USERNAME}  # 환경 변수에서 DB_USERNAME을 사용
-    password: ${DB_PASSWORD}  # 환경 변수에서 DB_PASSWORD을 사용
+    url: jdbc:mariadb://192.168.0.39:3306/education?serverTimezone=Asia/Seoul
+    username: myuser
+    password: greencom
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:

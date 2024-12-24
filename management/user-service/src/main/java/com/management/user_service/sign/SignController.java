@@ -1,5 +1,6 @@
 package com.management.user_service.sign;
 
+import com.management.user_service.user.User;
 import com.management.user_service.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,34 +17,36 @@ public class SignController {
 
     @GetMapping("/checkid")
     public boolean checkId(@RequestParam("userid") String userid){
-        if(userRepository.findByUserid(userid).isPresent()){
-            throw new IllegalArgumentException("이미 사용 중인 ID입니다.");
-        } else {
-            return true;
-        }
+        return userRepository.findByUserid(userid).isEmpty();
     }
 
     @GetMapping("/checkphone")
     public boolean checkPhone(@RequestParam("phoneNumber") String phoneNumber){
-        if(userRepository.findByPhoneNumber(phoneNumber).isPresent()){
-            throw new IllegalArgumentException("이미 사용 중인 전화번호입니다.");
-        } else {
-            return true;
-        }
+        return userRepository.findByPhoneNumber(phoneNumber).isEmpty();
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/signup")
     public ResponseEntity<String> join(@RequestBody JoinDto joinDto){
         signService.signUp(joinDto);
         return ResponseEntity.ok("회원가입 완료");
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signin")
     public ResponseEntity<String> login(
             @RequestBody LoginReqDto loginReqDto
     ){
         String token = signService.signIn(loginReqDto);
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/getuser")
+    public ResponseEntity<User> getUserFromToken(@RequestHeader("Authorization") String token) {
+        User user = signService.getUserFromToken(token);
+        if (user!=null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).body(null);
+        }
     }
 
 }
