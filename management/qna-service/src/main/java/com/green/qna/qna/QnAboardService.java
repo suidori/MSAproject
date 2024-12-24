@@ -127,5 +127,11 @@ public class QnAboardService {
         return qnaboardResponseDto;
 
     }
+
+    public QnAboard check (QnAboard qnAboard) {
+        qnAboard.setQnastate(QnAState.COMPLETE);
+        qnAboardRepository.save(qnAboard);
+        return qnAboard;
+    }
 }
 

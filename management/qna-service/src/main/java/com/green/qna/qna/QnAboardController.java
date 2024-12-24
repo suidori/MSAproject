@@ -36,9 +36,9 @@ public class QnAboardController {
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
 
-        if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+//        if (token == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
 
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
@@ -75,6 +75,28 @@ public class QnAboardController {
 //        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
         QnAboard qnAboard = qnAboardService.save(token ,qnAboardReqDto ,userReqDto);
         return ResponseEntity.ok(qnAboard);
+    }
+
+    @PostMapping("/qnacheck/{idx}")
+    public String check(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable(name = "idx") long idx
+            ) {
+
+        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
+
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+        if(userReqDto.getUuid()!=qnAboard.getUuid()){
+
+            return "요청자의 idx가 일치하지 않습니다.";
+        }
+
+        System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
+
+        qnAboardService.check(qnAboard);
+
+        return "문의완료 체크";
     }
 
 
