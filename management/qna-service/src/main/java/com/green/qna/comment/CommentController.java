@@ -37,7 +37,9 @@ public class CommentController {
     }
 
     @PostMapping("{qnAboardIdx}/insert")
-    public ResponseEntity<CommentEntity> insert(@PathVariable(value = "qnAboardIdx") Long qnAboardIdx
+    @Operation(summary = "댓글을 저장합니다.")
+    public ResponseEntity<CommentEntity> insert(@RequestHeader(name = "Authorization") String token
+                                                ,@PathVariable(value = "qnAboardIdx") Long qnAboardIdx
                                                ,@RequestBody CommentReqDto commentReqDto) {
         // openFeing user 정보 가져와야함
         System.out.println("패치밸리어블"+ qnAboardIdx);
@@ -46,23 +48,14 @@ public class CommentController {
 
         qnAboard.setQnastate(QnAState.IN_PROGRESS);
 
-        return ResponseEntity.ok(commentService.save(commentReqDto, qnAboard));
+        return ResponseEntity.ok(commentService.save(token, commentReqDto, qnAboard));
     }
 
-//    @PutMapping("update")
-//    public ResponseEntity<CommentEntity> update(@RequestBody CommentReqDto commentReqDto) {
-//        return ResponseEntity.ok(commentService.save(commentReqDto));
-//    }
-
-    // JWT -> userSerivec 우리가 발급 했는 JWT 맞냐..
-    // UUID -> userService 우리한테 등록되어있는거 맞냐
     @DeleteMapping("delete/{idx}")
+    @Operation(summary = "댓글을 삭제합니다.")
     public ResponseEntity<CommentEntity> delete(@PathVariable(value = "idx") Long idx,
                                                 @RequestHeader(name = "Authorization") String token) {
-//    public ResponseEntity<Void> delete(@PathVariable Long idx,
-//                                       @RequestHeader("authorization") String authorization) {
-//이게 성공하면... comment 삭제..
-//        userFeignClient.getUser()
+
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
         CommentEntity comment = commentRepository.findById(idx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));

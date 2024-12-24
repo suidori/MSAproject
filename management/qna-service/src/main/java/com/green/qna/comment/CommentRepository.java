@@ -11,4 +11,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
     Optional<CommentEntity> deleteByqnaboard(QnAboard qnaboard);
 
     Optional<CommentEntity> findAllByqnaboard(QnAboard qnaboard);
+
+    Optional<CommentEntity> findByuuid(QnAboard qnAboard);
 }

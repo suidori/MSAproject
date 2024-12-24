@@ -1,24 +1,17 @@
 package com.green.qna.qna;
 
 import com.green.qna.comment.CommentRepository;
-import com.green.qna.comment.CommentReqDto;
 import com.green.qna.Dto.UserReqDto;
 import com.green.qna.qna.entity.QnAState;
 import com.green.qna.qna.entity.QnAboard;
-//import com.green.qna.Entity.User;
-//import com.green.qna.Login.LoginUserDetails;
-//import com.green.qna.Repository.UserRepository;
 import com.green.qna.error.BizException;
 import com.green.qna.error.ErrorCode;
 import com.green.qna.feign.UserFeignClient;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,7 +26,6 @@ public class QnAboardService {
     private final ModelMapper modelMapper;
     private final QnAboardRepository qnAboardRepository;
     private final UserFeignClient userFeignClient;
-//    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
     public QnAboard save(String token, QnAboardReqDto qnAboardReqDto, UserReqDto userReqDto) {
@@ -67,9 +59,10 @@ public class QnAboardService {
 
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
-        String userid = userReqDto.getUserid();
+//        String userid = userReqDto.getUserid();
+        String uuid = userReqDto.getUuid();
 
-        Page<QnAboard> page = qnAboardRepository.findByuserid(userid, pageable);
+        Page<QnAboard> page = qnAboardRepository.findByuuid(uuid, pageable);
 
         return mapToQuestionResponsePageDto(page);
     }
@@ -94,6 +87,21 @@ public class QnAboardService {
         responseDto.setSize(page.getSize());
 
         return responseDto;
+    }
+
+
+    //서치 서비스 테스트
+    public QnAboardPageResponseDto mapToPageResponseDto(Page<QnAboard> page) {
+        List<QnAboardResponseDto> dtoList = page.getContent().stream()
+                .map(this::convertToQnAboardResponseDto)
+                .toList();
+
+        return QnAboardPageResponseDto.builder()
+                .list(dtoList)
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .size(page.getSize())
+                .build();
     }
 
 
@@ -128,10 +136,11 @@ public class QnAboardService {
 
     }
 
-    public QnAboard check (QnAboard qnAboard) {
+    public QnAboard check(QnAboard qnAboard) {
         qnAboard.setQnastate(QnAState.COMPLETE);
         qnAboardRepository.save(qnAboard);
         return qnAboard;
     }
-}
 
+
+}
