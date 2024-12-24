@@ -15,6 +15,20 @@ spec:
     spec:
       containers:
         - name: auth-service-container
-          image: suidori/auth-service:msa.k8.01 # 서비스가 사용할 도커 이미지
+          image: suidori/auth-service:msa.k8.03  # 서비스가 사용할 도커 이미지
           ports:
             - containerPort: 9000  # 애플리케이션 포트 (서비스가 리슨하는 포트)
+          volumeMounts:
+            - name: private-key-volume
+              mountPath: /app/keys/private.pem  # 컨테이너 내에서 사용할 경로
+              subPath: private.pem  # ConfigMap 내의 파일 이름
+            - name: public-key-volume
+              mountPath: /app/keys/public.key  # 컨테이너 내에서 사용할 경로
+              subPath: public.key  # ConfigMap 내의 파일 이름
+      volumes:
+        - name: private-key-volume
+          configMap:
+            name: private-key  # 사용할 ConfigMap 이름
+        - name: public-key-volume
+          configMap:
+            name: public-key  # 사용할 ConfigMap 이름

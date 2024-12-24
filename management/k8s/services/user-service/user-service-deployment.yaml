@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: user-service-container
-          image: suidori/user-service:msa.k8.04 # 서비스가 사용할 도커 이미지
+          image: suidori/user-service:msa.k8.10 # 서비스가 사용할 도커 이미지
           env:
             - name: DB_URL
               value: "jdbc:mariadb://mariadb-service.mariadb-namespace.svc.cluster.local:3306/education?serverTimezone=Asia/Seoul"
