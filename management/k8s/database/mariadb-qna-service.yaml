@@ -10,4 +10,6 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-  type: LoadBalancer
+      # qna 데이터베이스 포트
+      nodePort: 30306
+  type: NodePort
