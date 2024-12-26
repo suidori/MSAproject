@@ -1,7 +1,7 @@
 @echo off
 
-kubectl apply -f user-service-deployment.yaml
-kubectl apply -f user-service-service.yaml
+kubectl apply -f qna-service-deployment.yaml
+kubectl apply -f qna-service-service.yaml
 
 echo All resources have been applied successfully.
 pause

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-qna-deployment
+  namespace: mariadb-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb-qna
+  template:
+    metadata:
+      labels:
+        app: mariadb-qna
+    spec:
+      containers:
+        - name: mariadb-qna
+          image: mariadb:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-root-password
+            - name: MYSQL_USER
+              value: myuser
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-password
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb-qna-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-qna-data
+          persistentVolumeClaim:
+            claimName: mariadb-qna-pvc
