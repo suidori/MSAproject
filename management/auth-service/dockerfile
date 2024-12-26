@@ -1,0 +1,27 @@
+# 빌드 단계
+FROM gradle:jdk17 as builder
+WORKDIR /build
+
+# 의존성만 먼저 복사하여 Gradle 캐시를 활용
+COPY build.gradle settings.gradle /build/
+RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
+
+# 전체 프로젝트 복사 후 빌드
+COPY . /build
+RUN gradle build -x test --parallel
+
+# 실행 단계
+FROM openjdk:17.0-slim
+WORKDIR /app
+
+# 빌드된 JAR 파일 복사
+COPY --from=builder /build/build/libs/*-SNAPSHOT.jar ./app.jar
+
+# 필요한 포트 노출
+EXPOSE 8100
+
+# 비루트 사용자로 실행
+USER nobody
+
+# 앱 실행
+ENTRYPOINT ["java", "-jar", "-Djava.security.egd=file:/dev/./urandom", "-Dsun.net.inetaddr.ttl=0", "app.jar"]

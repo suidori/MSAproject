@@ -4,8 +4,9 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/freeboard-service" />
     <file type="web" url="file://$PROJECT_DIR$/qna-service" />
+    <file type="web" url="file://$PROJECT_DIR$/user-service" />
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

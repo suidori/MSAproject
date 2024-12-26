@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-key
+  namespace: msa-namespace  # 네임스페이스 지정 (배포하려는 네임스페이스)
+data:
+  private.pem: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCROfh3eI/Ra8EC
+    BxjPdGxYntSUx4b4iJqCkT0c/VdTkK6nfF/MAlDQRlwBBkRnzYkfxDMR1ygpxy+1
+    WK8pLheyFRj5Hif5ib3o+ckKppwxdDPGjS/BPygtC06h/AUz52dzClSr71BXB/bY
+    we1xdqc5R60oYvFgcrkY32QxG7Igyqmy8Sis4zhbFxiBCLMUdHhTghvyy6NfrfB0
+    abvS1IpVddVLmRlp+94mKsip76kbAxtYCcG8ZCn0ILb9iWhCG4UVG9Ks+GUW5OMj
+    aEVSQSO0AaF9Kpa3FPNDK6ODYI1NNxf4EFoi9QkBEXBTcVOeskGUo/o2B8DSBg2Y
+    OmQ3kBqzAgMBAAECggEAHjm6hOMKy8NpgEqJ12ObyTYFeJGufbuwrMwdtBLmQfYy
+    45j3NzakKzT5oRz0z8XvbDUhi+0D5u4V9+BlVGTLebz6XZ7xIvaQGBUkypqyl3hf
+    7kskTUwfyIA59WzGiG75EPBtfvtn9TUrIyH5kUvosftBBs7Q/gnijFKyP6ZMBJbZ
+    OMI3ioRDpbH4I73z4SmK6Zs84KAx1RTSy9Q7JooZGDtIgsA0HReqJnfIQfoHKECH
+    z3+n0Wpq8BZZm/rXGw1LHGVYJefegompVKSAuEiMgBa3ys7vKikpueqNoN2p7nEk
+    xJQfeNqCv9M8kixeFARdgR7MUK4StDGd8JKi2/qVwQKBgQDIYePkDnzc98x46r4H
+    qoo1n39BFU+pXpg732QacPgTUz+dj0kKTLfNUZDRT5DfuQ3D27UlkOK1Idt47DqE
+    Ns5kfMbNnVt7GXeFw7/qRuLQT3NpFK7hdztwDLlphj8VUa2jld/GOD1fV7Z86WRq
+    CRhgFGZE11TnbWh3Y2M9FswlJwKBgQC5iP3yjMLhu3jowF5YjKW3m7jccbvklZrj
+    Q/YIyAM1prC5MupH66WGbipH8uBXh1nJ5ZfjeDBLoll6+8Dxvz6Y+x67Ryq4Pwm+
+    s1R5IlEsV7uRHbvvCQo8vHJinUaAnS/oMHl5GOzlrSWQ93iQFvtMJvkjvMu1xAcZ
+    iyn4KHiNlQKBgQC+F/91bjkN9xZG74pvA14yGKlEOM9lwZNx2S7B1sHAs4z6D+Ae
+    oUEMyoAz0OODGa7xSxDCHnyzkPb/9DpfCw8pTSXcEZejZDl68ISz36N0Mqst2K0+
+    vznnxmpurShTNTUgpyGujdPLCw7X2SGlZhN1smSCkjS9h5E/EU4nueTYqQKBgHbU
+    xgmunDcl8rfoVcUTOCSUKV+PvM8X/t8mrRNMv7mCLNhBQwqTZC3oq03vwj5tY1XL
+    pm+7j/sxXWxGiHqNidNDq5g5aaQeQ+iPRUBceW8UNf8o8zCTMqpZ7E06/GftxTxK
+    p9Km4zvrnQ7vYZmwDn3kzFdWWYbuqblzh4r4qNXNAoGBAMInaf87dpgMa1i4UKf0
+    SApGl/zQkc65/AsEFOQ679Rp/lofYC1g18j59t6+LJoNkeQ6yyBy9LaWpXCZ7utg
+    ggCRbZmkkFrGjF+YY5Z1IpUmFy54fkZLaYTwUa1Kuf7+xVx8HcYe3RbL9nf7YRdq
+    4Km+wgOX0ZHrLGijDDOJlHv2
+    -----END PRIVATE KEY-----
