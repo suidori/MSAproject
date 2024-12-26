@@ -23,6 +23,8 @@ public class CommentReqDto {
 
     private String name;
 
+    private String role;
+
     // 외래키
     private Long qnaboard_idx;
 

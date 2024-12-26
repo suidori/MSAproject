@@ -28,6 +28,8 @@ public class CommentEntity {
 
     private String name;
 
+    private String role;
+
     @ManyToOne
     @JoinColumn(name = "qnaboard_idx")
     private QnAboard qnaboard;

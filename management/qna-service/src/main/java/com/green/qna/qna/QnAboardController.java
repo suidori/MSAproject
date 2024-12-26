@@ -5,6 +5,7 @@ import com.green.qna.Dto.UserReqDto;
 import com.green.qna.qna.entity.QnAboard;
 import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
+import com.sun.tools.jconsole.JConsoleContext;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -80,27 +81,57 @@ public class QnAboardController {
         return ResponseEntity.ok(qnAboard);
     }
 
-    @PostMapping("/qnacheck/{idx}")
-    @Operation(summary = "문의완료 체크(테스트중)")
-    public String check(
+    @PostMapping("/change/{idx}")
+    @Operation(summary = "QnA를 수정합니다.")
+    public ResponseEntity<QnAboard> change(
+            @PathVariable(name = "idx") long idx,
             @RequestHeader(name = "Authorization") String token,
-            @PathVariable(name = "idx") long idx
-            ){
+            @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
+
+
+
+        UserReqDto userReqDto = userFeignClient.getUser(token);
+
+//        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
 
         QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
 
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        qnAboard.setTitle(qnAboardReqDto.getTitle());
+        qnAboard.setContent(qnAboardReqDto.getContent());
+        qnAboard.setType(qnAboardReqDto.getType());
 
-        if(userReqDto.getUuid()!=qnAboard.getUuid()){
+        System.out.println("변경된거"+qnAboard);
 
-            return "요청자의 idx가 일치하지 않습니다.";
+        qnAboardRepository.save(qnAboard);
+
+        return ResponseEntity.ok(qnAboard);
+    }
+
+
+    @PostMapping("/qnacheck/{idx}")
+    @Operation(summary = "문의완료 체크(테스트중)")
+    public ResponseEntity<QnAboard> check(
+            @PathVariable(name = "idx") long idx,
+             @RequestHeader(name = "Authorization") String token
+            ){
+
+        System.out.println("체크토큰"+token);
+        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
+
+        UserReqDto userReqDto = userFeignClient.getUser(token);
+
+
+        System.out.println("체크유저"+userReqDto);
+        if(userReqDto.getUuid().equals(qnAboard.getUuid())){
+
+            System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
+
+            qnAboardService.check(qnAboard);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
-
-        qnAboardService.check(qnAboard);
-
-        return "문의완료 체크";
+        return ResponseEntity.ok(qnAboard);
     }
 
     @GetMapping("view/{idx}")
@@ -118,20 +149,19 @@ public class QnAboardController {
 
     @DeleteMapping("delete/{idx}")
     @Operation(summary = "QnA를 삭제합니다.")
-    public ResponseEntity<QnAboard> qnadelete (@RequestParam(value = "idx") Long idx,
-                                               @RequestHeader(name = "Authorization") String token) {
+    public String qnadelete (@PathVariable(name = "idx") long idx) {
 
-        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+//        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
+//        UserReqDto userReqDto = userFeignClient.getUser(token);
 
-        if(userReqDto.getUserid().equals(qnAboard.getUserid())){
+//        if(userReqDto.getUserid().equals(qnAboard.getUserid())){
 
-            if(commentRepository.findAllByqnaboard(qnAboard)!=null){
-                commentRepository.deleteByqnaboard(qnAboard);
-            }
-            qnAboardRepository.deleteById(idx);
-        }
-        return ResponseEntity.ok(qnAboard);
+//            if(commentRepository.findAllByqnaboard(qnAboard)!=null){
+//                commentRepository.deleteByqnaboard(qnAboard);
+//            }
+           qnAboardRepository.deleteById(idx);
+//        }
+        return "삭제완료";
     }
 
    // 서치 메서드

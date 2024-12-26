@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(title = "QnA-Service API 명세서",
-                description = "ㅇㅇ",
+                description = "오늘 오징어게임2 나옴",
                 version = "v112"))
 @Configuration
 public class SwaggerConfig {

@@ -34,7 +34,10 @@ public class CommentController {
     @Operation(summary = "답글 리스트를 불러 옵니다.", description = "List comments")
     public ResponseEntity<List<CommentEntity>> list(@PathVariable(value = "qnAboardIdx") Long qnAboardIdx) {
 
-        return ResponseEntity.ok(commentService.findAllByQnAboardId(qnAboardIdx));
+        QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
+
+
+        return ResponseEntity.ok(commentService.findAllByQnAboardId(qnAboard));
     }
 
     @PostMapping("{qnAboardIdx}/insert")
@@ -47,14 +50,16 @@ public class CommentController {
 
             System.out.println("패치밸리어블" + qnAboardIdx);
 
-            UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+//            UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+
+            UserReqDto userReqDto = userFeignClient.getUser(token);
 
             QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 
             qnAboard.setQnastate(QnAState.IN_PROGRESS);
             qnAboardRepository.save(qnAboard);
 
-            return ResponseEntity.ok(commentService.save(userReqDto ,token, commentReqDto, qnAboard));
+            return ResponseEntity.ok(commentService.save(userReqDto , commentReqDto, qnAboard));
 
         } catch (Exception e) {
             System.out.println(e);
@@ -67,7 +72,7 @@ public class CommentController {
     public ResponseEntity<CommentEntity> delete(@PathVariable(value = "idx") Long idx,
                                                 @RequestHeader(name = "Authorization") String token) {
 
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        UserReqDto userReqDto = userFeignClient.getUser(token);
 
         CommentEntity comment = commentRepository.findById(idx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 

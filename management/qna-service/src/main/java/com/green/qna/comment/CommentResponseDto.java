@@ -17,4 +17,6 @@ public class CommentResponseDto {
 
     private String name;
 
+    private String role;
+
 }
