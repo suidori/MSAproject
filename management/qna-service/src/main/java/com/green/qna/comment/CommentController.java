@@ -33,6 +33,7 @@ public class CommentController {
     @GetMapping("{qnAboardIdx}/list")
     @Operation(summary = "답글 리스트를 불러 옵니다.", description = "List comments")
     public ResponseEntity<List<CommentEntity>> list(@PathVariable(value = "qnAboardIdx") Long qnAboardIdx) {
+
         return ResponseEntity.ok(commentService.findAllByQnAboardId(qnAboardIdx));
     }
 
@@ -51,6 +52,7 @@ public class CommentController {
             QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 
             qnAboard.setQnastate(QnAState.IN_PROGRESS);
+            qnAboardRepository.save(qnAboard);
 
             return ResponseEntity.ok(commentService.save(userReqDto ,token, commentReqDto, qnAboard));
 

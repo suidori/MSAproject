@@ -17,7 +17,7 @@ public class CommentService {
     private final UserFeignClient userFeignClient;
 
     public List<CommentEntity> findAllByQnAboardId(Long qnAboardId) {
-        List<CommentEntity> list = commentRepository.findAll();
+        List<CommentEntity> list = commentRepository.findByIdx(qnAboardId);
         return list;
     }
 
