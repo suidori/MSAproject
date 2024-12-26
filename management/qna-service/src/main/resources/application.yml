@@ -20,13 +20,13 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.0.103:3306/education?serverTimezone=Asia/Seoul
-    username: myuser
-    password: greencom
+    url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
+    username: root
+    password: mysecretkey
 #    initialization-mode: always # 애플리케이션 시작 시 data.sql 실행
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 #      ddl=auto: update
 #      ddl-auto: none
     properties:
