@@ -42,13 +42,22 @@ public class CommentController {
                                                 ,@PathVariable(value = "qnAboardIdx") Long qnAboardIdx
                                                ,@RequestBody CommentReqDto commentReqDto) {
         // openFeing user 정보 가져와야함
-        System.out.println("패치밸리어블"+ qnAboardIdx);
+        try {
 
-        QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
+            System.out.println("패치밸리어블" + qnAboardIdx);
 
-        qnAboard.setQnastate(QnAState.IN_PROGRESS);
+            UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
 
-        return ResponseEntity.ok(commentService.save(token, commentReqDto, qnAboard));
+            QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
+
+            qnAboard.setQnastate(QnAState.IN_PROGRESS);
+
+            return ResponseEntity.ok(commentService.save(userReqDto ,token, commentReqDto, qnAboard));
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @DeleteMapping("delete/{idx}")

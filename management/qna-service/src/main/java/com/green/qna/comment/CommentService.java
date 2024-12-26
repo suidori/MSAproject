@@ -21,9 +21,7 @@ public class CommentService {
         return list;
     }
 
-    public CommentEntity save(String token, CommentReqDto commentReqDto, QnAboard qnAboard) {
-
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+    public CommentEntity save(UserReqDto userReqDto ,String token, CommentReqDto commentReqDto, QnAboard qnAboard) {
 
         CommentEntity commentEntity = CommentEntity.builder()
                .comment(commentReqDto.getComment())
