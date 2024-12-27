@@ -36,7 +36,6 @@ public class CommentController {
 
         QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 
-
         return ResponseEntity.ok(commentService.findAllByQnAboardId(qnAboard));
     }
 
@@ -69,7 +68,7 @@ public class CommentController {
 
     @DeleteMapping("delete/{idx}")
     @Operation(summary = "댓글을 삭제합니다.")
-    public ResponseEntity<CommentEntity> delete(@PathVariable(value = "idx") Long idx,
+    public String delete(@PathVariable(value = "idx") Long idx,
                                                 @RequestHeader(name = "Authorization") String token) {
 
         UserReqDto userReqDto = userFeignClient.getUser(token);
@@ -78,11 +77,10 @@ public class CommentController {
 
         if(!userReqDto.getUuid().equals(comment.getUuid())){
 
-          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+          return "댓글삭제 실패(uuid 불일치)";
         }
         commentService.deleteById(idx);
         log.info("[" + idx + "]"+ ": 코맨트 삭제 완료");
-        return ResponseEntity.ok(comment);
-
+        return idx + " 댓글삭제 성공";
     }
 }

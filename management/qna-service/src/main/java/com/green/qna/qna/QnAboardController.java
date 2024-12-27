@@ -2,6 +2,7 @@ package com.green.qna.qna;
 
 import com.green.qna.comment.CommentRepository;
 import com.green.qna.Dto.UserReqDto;
+import com.green.qna.comment.entity.CommentEntity;
 import com.green.qna.qna.entity.QnAboard;
 import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("QnA")
@@ -88,8 +91,6 @@ public class QnAboardController {
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
 
-
-
         UserReqDto userReqDto = userFeignClient.getUser(token);
 
 //        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
@@ -120,17 +121,14 @@ public class QnAboardController {
 
         UserReqDto userReqDto = userFeignClient.getUser(token);
 
-
         System.out.println("체크유저"+userReqDto);
         if(userReqDto.getUuid().equals(qnAboard.getUuid())){
 
             System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
-
             qnAboardService.check(qnAboard);
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
         return ResponseEntity.ok(qnAboard);
     }
 
@@ -149,18 +147,19 @@ public class QnAboardController {
 
     @DeleteMapping("delete/{idx}")
     @Operation(summary = "QnA를 삭제합니다.")
-    public String qnadelete (@PathVariable(name = "idx") long idx) {
+    public String qnadelete (@PathVariable(name = "idx") long idx,
+                             @RequestHeader(name = "Authorization") String token) {
 
-//        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
-//        UserReqDto userReqDto = userFeignClient.getUser(token);
+        QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
+        UserReqDto userReqDto = userFeignClient.getUser(token);
 
-//        if(userReqDto.getUserid().equals(qnAboard.getUserid())){
-
-//            if(commentRepository.findAllByqnaboard(qnAboard)!=null){
-//                commentRepository.deleteByqnaboard(qnAboard);
-//            }
-           qnAboardRepository.deleteById(idx);
-//        }
+        if(userReqDto.getUuid().equals(qnAboard.getUuid())){
+            List<CommentEntity> list =  commentRepository.findByqnaboard(qnAboard);
+            if (!list.isEmpty()) {
+                commentRepository.deleteAll(list);
+            }
+            qnAboardRepository.deleteById(idx);
+        }
         return "삭제완료";
     }
 

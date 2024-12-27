@@ -19,4 +19,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
 
 
     List<CommentEntity> findByqnaboard(QnAboard qnAboard);
+
+    boolean existsByQnaboard(QnAboard qnAboard);
 }
