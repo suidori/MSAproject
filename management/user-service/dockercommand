@@ -2,7 +2,7 @@
 docker rmi suidori/user-service:msa.k8.10
 
 #이미지 생성
-docker build -t suidori/user-service:msa.k8.11 .
+docker build -t suidori/user-service:msa.k8.12 .
 
 #이미지 dockerhub 업로드 명령어
-docker push suidori/user-service:msa.k8.11
+docker push suidori/user-service:msa.k8.12

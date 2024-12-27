@@ -18,17 +18,11 @@ spec:
           image: suidori/qna-service:msa.k8.01 # 서비스가 사용할 도커 이미지
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mariadb://mariadb-service.mariadb-namespace.svc.cluster.local:3306/education?serverTimezone=Asia/Seoul"
+              value: "jdbc:mariadb://mariadb-qna-service.mariadb-namespace.svc.cluster.local:3306/qna?serverTimezone=Asia/Seoul"
             - name: SPRING_DATASOURCE_USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-secret
-                  key: mariadb-user
+              value: root
             - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-secret
-                  key: mariadb-password
+              value: mysecretkey
             - name: USER_SERVICE
               value: "http://user-service.msa-namespace.svc.cluster.local:8100"
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT

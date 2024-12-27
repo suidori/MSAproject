@@ -22,8 +22,6 @@ public class User {
 
     private String userid;
 
-    private String uuid;
-
     private String password;
 
     private String name;

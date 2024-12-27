@@ -9,6 +9,7 @@
       <module name="ma-project" target="17" />
       <module name="ma-project.main" target="17" />
       <module name="ma-project.test" target="17" />
+      <module name="user-service.test" target="17" />
       <module name="userService" target="17" />
       <module name="userService.main" target="17" />
       <module name="userService.test" target="17" />
