@@ -55,9 +55,6 @@ public class CommentController {
 
             QnAboard qnAboard = qnAboardRepository.findById(qnAboardIdx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 
-            qnAboard.setQnastate(QnAState.IN_PROGRESS);
-            qnAboardRepository.save(qnAboard);
-
             return ResponseEntity.ok(commentService.save(userReqDto , commentReqDto, qnAboard));
 
         } catch (Exception e) {
@@ -66,21 +63,26 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("delete/{idx}")
+    @DeleteMapping("delete/{idx}/{qnaidx}")
     @Operation(summary = "댓글을 삭제합니다.")
     public String delete(@PathVariable(value = "idx") Long idx,
-                                                @RequestHeader(name = "Authorization") String token) {
+                         @PathVariable(value = "qnaidx") Long qnaidx,
+                         @RequestHeader(name = "Authorization") String token) {
 
         UserReqDto userReqDto = userFeignClient.getUser(token);
 
         CommentEntity comment = commentRepository.findById(idx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
 
+        QnAboard qnAboard = qnAboardRepository.findById(qnaidx).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND));
+
         if(!userReqDto.getUuid().equals(comment.getUuid())){
 
           return "댓글삭제 실패(uuid 불일치)";
         }
-        commentService.deleteById(idx);
-        log.info("[" + idx + "]"+ ": 코맨트 삭제 완료");
+        commentService.deleteById(idx, qnAboard);
+
+        qnAboardRepository.save(qnAboard);
+
         return idx + " 댓글삭제 성공";
     }
 }

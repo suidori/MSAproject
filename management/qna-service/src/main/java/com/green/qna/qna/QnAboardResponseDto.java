@@ -21,5 +21,5 @@ public class QnAboardResponseDto {
     private String userid;
     private String uuid;
     private String role;
-
+    private int comments;
 }

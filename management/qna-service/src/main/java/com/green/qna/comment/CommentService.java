@@ -3,6 +3,8 @@ package com.green.qna.comment;
 import com.green.qna.Dto.UserReqDto;
 import com.green.qna.comment.entity.CommentEntity;
 import com.green.qna.feign.UserFeignClient;
+import com.green.qna.qna.QnAboardRepository;
+import com.green.qna.qna.entity.QnAState;
 import com.green.qna.qna.entity.QnAboard;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final UserFeignClient userFeignClient;
+    private final QnAboardRepository qnAboardRepository;
 
     public List<CommentEntity> findAllByQnAboardId(QnAboard qnAboard) {
         List<CommentEntity> list =  commentRepository.findByqnaboard(qnAboard);
@@ -33,10 +36,29 @@ public class CommentService {
                 .role(userReqDto.getRole())
                .build();
 
+
+        int comments = commentRepository.countByQnaboard(qnAboard);
+
+        qnAboard.setComments(comments+1);
+        qnAboard.setQnastate(QnAState.IN_PROGRESS);
+
+        qnAboardRepository.save(qnAboard);
+
         return commentRepository.save(commentEntity);
     }
 
-    public void deleteById(Long idx) {
+    public void deleteById(Long idx, QnAboard qnAboard) {
+
+        int comments = qnAboard.getComments();
+
+        comments --;
+
+        if(comments==0){
+            qnAboard.setQnastate(QnAState.WAITING);
+        }
+        qnAboard.setComments(comments);
+
         commentRepository.deleteById(idx);
+
     }
 }

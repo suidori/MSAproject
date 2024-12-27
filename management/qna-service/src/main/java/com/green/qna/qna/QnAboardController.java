@@ -52,7 +52,7 @@ public class QnAboardController {
         System.out.println("토큰으로 불러온 유저 정보 " + userReqDto);
 
         if (userReqDto.getRole().equals("ROLE_STUDENT")) {
-            //token 가지고... 학생일때는 가져올게 없는데.. 자기꺼만 select..
+
             QnAboardPageResponseDto studentQnAList =
                     qnAboardService.qnAstudentPage(token, PageUtil.getPageable(pageNum, size));
             return ResponseEntity.ok(studentQnAList);
@@ -69,15 +69,7 @@ public class QnAboardController {
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
 
-        if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        System.out.println(token);
-
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
-
-        System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
 
 //        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
         QnAboard qnAboard = qnAboardService.save(token ,qnAboardReqDto ,userReqDto);
@@ -110,21 +102,18 @@ public class QnAboardController {
 
 
     @PostMapping("/qnacheck/{idx}")
-    @Operation(summary = "문의완료 체크(테스트중)")
+    @Operation(summary = "문의완료 체크")
     public ResponseEntity<QnAboard> check(
             @PathVariable(name = "idx") long idx,
              @RequestHeader(name = "Authorization") String token
             ){
 
-        System.out.println("체크토큰"+token);
         QnAboard qnAboard = qnAboardRepository.findById(idx).orElseThrow(() -> new EntityNotFoundException("QnA idx일치하는게 없음 " + idx));
 
         UserReqDto userReqDto = userFeignClient.getUser(token);
 
-        System.out.println("체크유저"+userReqDto);
         if(userReqDto.getUuid().equals(qnAboard.getUuid())){
 
-            System.out.println("세이브 토큰으로 불러온거 "+userReqDto);
             qnAboardService.check(qnAboard);
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -137,9 +126,6 @@ public class QnAboardController {
     public ResponseEntity<QnAboardResponseDto> findOne(
             @RequestHeader(name = "Authorization") String token,
             @PathVariable(name = "idx") long idx) {
-        if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         QnAboardResponseDto qnAboardResponseDto = qnAboardService.viewPage(idx);
         return ResponseEntity.ok(qnAboardResponseDto);

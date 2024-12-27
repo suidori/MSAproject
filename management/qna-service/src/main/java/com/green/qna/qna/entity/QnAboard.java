@@ -40,4 +40,6 @@ public class QnAboard {
 
     private String uuid;
 
+    private int comments;
+
 }
