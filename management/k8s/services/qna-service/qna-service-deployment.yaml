@@ -31,5 +31,10 @@ spec:
                   key: mariadb-password
             - name: USER_SERVICE
               value: "http://user-service.msa-namespace.svc.cluster.local:8100"
+            - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: msa-k8s-configmap
+                  key: management-zipkin-tracing-endpoint
           ports:
             - containerPort: 8100  # 애플리케이션 포트 (서비스가 리슨하는 포트)

@@ -55,6 +55,15 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
 	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
+
+	// zipkin 시작
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.brave:brave-instrumentation-spring-web'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	implementation 'io.micrometer:micrometer-observation'
+	implementation 'io.github.openfeign:feign-micrometer'
+	// zipkin 끝
+
 }
 
 tasks.named('test') {

@@ -18,6 +18,18 @@ spring:
 #    level:
 #      org.springframework: DEBUG
 
+# 생성하는거...
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
