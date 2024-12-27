@@ -21,3 +21,10 @@ spec:
                 name: user-service
                 port:
                   number: 8100
+          - path: /QnA
+            pathType: Prefix
+            backend:
+              service:
+                name: qna-service
+                port:
+                  number: 8120

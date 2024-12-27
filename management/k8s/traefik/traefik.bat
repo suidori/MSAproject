@@ -9,5 +9,7 @@ kubectl apply -f 02-traefik-config.yml
 kubectl apply -f 02-traefik-services.yml
 kubectl apply -f 03-traefik-ingress.yml
 
+@REM kubectl apply -f .
+
 echo All resources have been applied successfully.
 pause

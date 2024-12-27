@@ -1,0 +1,3 @@
+gradlw build
+docker build -t suidori/qna-service:msa.k8.01
+docker push suidori/qna-service:msa.k8.01
