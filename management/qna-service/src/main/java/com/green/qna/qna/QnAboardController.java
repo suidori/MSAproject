@@ -8,6 +8,7 @@ import com.green.qna.feign.UserFeignClient;
 import com.green.qna.utility.PageUtil;
 import com.sun.tools.jconsole.JConsoleContext;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,19 @@ public class QnAboardController {
 
     //토큰이 아니라 uuid로 변경할것...
     @GetMapping("/list")
-    @Operation(summary = "QnA리스트를 불러옵니다.")
+    @Operation(summary = "QnA 리스트를 불러옵니다.",
+            parameters = {
+                    @Parameter(name = "token", description = "인증 토큰", required = true),
+                    @Parameter(name = "pageNum", description = "페이지 번호", required = true),
+                    @Parameter(name = "size", description = "페이지 크기", required = false)
+            })
     public ResponseEntity<QnAboardPageResponseDto> qetlist(String token,
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
 
+        System.out.println("pagenum" + pageNum );
+        System.out.println("size" + size );
 //        if (token == null) {
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 //        }

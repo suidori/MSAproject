@@ -1,24 +1,100 @@
+#server:
+#  port: 8120
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG                            # Hibernate SQL 로깅 레벨
+#    org.hibernate.type.descriptor.sql.BasicTypeDescriptor: TRACE  # Hibernate의 SQL 타입 디스크립터 로깅 레벨
+#    org.springframework.security: TRACE
+#
+#spring:
+##  application:
+##    name: MSAfreeboard
+#  # spring 관련 설정이 이곳에 들어갑니다.
+#
+##  main:
+##    banner-mode: off
+##  logging:
+##    level:
+##      org.springframework: DEBUG
+#
+## 생성하는거...
+#management:
+#  tracing:
+#    sampling:
+#      probability: 1.0
+#    propagation:
+#      consume: B3
+#      produce: B3
+#  zipkin:
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans
+#
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
+##    url: jdbc:mariadb://192.168.0.69:3306/qna?serverTimezone=Asia/Seoul
+#    username: root
+#    password: mysecretkey
+##    initialization-mode: always # 애플리케이션 시작 시 data.sql 실행
+#  jpa:
+#    hibernate:
+##      ddl-auto: create
+#      ddl=auto: update
+##      ddl-auto: none
+#    properties:
+#      database-platform: org.hibernate.dialect.MariaDB103Dialect
+##      hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect  # Hibernate의 Dialect 설정 (MariaDB용)
+##      hibernate.format_sql: true
+#    show-sql: true
+#    open-in-view: false
+#    defer-datasource-initialization: true
+#  servlet:           # Multipart 파일 업로드 설정
+#    multipart:
+#      max-file-size: 100MB
+#      max-request-size: 100MB  # 요청 최대 크기
+#      file-size-threshold: 0  # 파일 크기 임계값
+#      enabled: true
+#
+#  jwt:
+#    secret: mySuperSecretKey  # JWT 비밀 키 설정
+##오픈페인 주소 지명
+##user-service: http://greencomart.kro.kr:716/
+#user-service: http://192.168.0.103:8100/
+#
+
+
+#=====================
 server:
   port: 8120
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG                            # Hibernate SQL 로깅 레벨
-    org.hibernate.type.descriptor.sql.BasicTypeDescriptor: TRACE  # Hibernate의 SQL 타입 디스크립터 로깅 레벨
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicTypeDescriptor: TRACE
     org.springframework.security: TRACE
 
 spring:
-#  application:
-#    name: MSAfreeboard
-  # spring 관련 설정이 이곳에 들어갑니다.
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
+    username: root
+    password: mysecretkey
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+    show-sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 0
+      enabled: true
 
-#  main:
-#    banner-mode: off
-#  logging:
-#    level:
-#      org.springframework: DEBUG
-
-# 생성하는거...
 management:
   tracing:
     sampling:
@@ -30,34 +106,7 @@ management:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
 
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
-    username: root
-    password: mysecretkey
-#    initialization-mode: always # 애플리케이션 시작 시 data.sql 실행
-  jpa:
-    hibernate:
-#      ddl-auto: create
-      ddl=auto: update
-#      ddl-auto: none
-    properties:
-      database-platform: org.hibernate.dialect.MariaDB103Dialect
-#      hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect  # Hibernate의 Dialect 설정 (MariaDB용)
-#      hibernate.format_sql: true
-    show-sql: true
-    open-in-view: false
-    defer-datasource-initialization: true
-  servlet:           # Multipart 파일 업로드 설정
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB  # 요청 최대 크기
-      file-size-threshold: 0  # 파일 크기 임계값
-      enabled: true
+spring.jwt:
+  secret: mySuperSecretKey
 
-  jwt:
-    secret: mySuperSecretKey  # JWT 비밀 키 설정
-#오픈페인 주소 지명
-#user-service: http://greencomart.kro.kr:716/
 user-service: http://192.168.0.103:8100/
-

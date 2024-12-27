@@ -47,6 +47,24 @@ public class QnAboardService {
     }
 
 
+
+
+
+    //서치 서비스 테스트
+    public QnAboardPageResponseDto mapToPageResponseDto(Page<QnAboard> page) {
+        List<QnAboardResponseDto> dtoList = page.getContent().stream()
+                .map(this::convertToQnAboardResponseDto)
+                .toList();
+
+        return QnAboardPageResponseDto.builder()
+                .list(dtoList)
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .size(page.getSize())
+                .build();
+    }
+
+
     public QnAboardPageResponseDto qnAPage(Pageable pageable) {
 
         Page<QnAboard> page = qnAboardRepository.findAll(pageable);
@@ -90,19 +108,6 @@ public class QnAboardService {
     }
 
 
-    //서치 서비스 테스트
-    public QnAboardPageResponseDto mapToPageResponseDto(Page<QnAboard> page) {
-        List<QnAboardResponseDto> dtoList = page.getContent().stream()
-                .map(this::convertToQnAboardResponseDto)
-                .toList();
-
-        return QnAboardPageResponseDto.builder()
-                .list(dtoList)
-                .totalElements(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .size(page.getSize())
-                .build();
-    }
 
 
     // QnAboard를 QnAboardResponseDto로 변환하는 메서드 분리
