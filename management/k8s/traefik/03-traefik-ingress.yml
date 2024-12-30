@@ -13,11 +13,11 @@ spec:
               service:
                 name: auth-service
                 port:
-                  number: 9000
+                  name: auth-port
           - path: /user
             pathType: Prefix
             backend:
               service:
                 name: user-service
                 port:
-                  number: 8100
+                  name: user-port

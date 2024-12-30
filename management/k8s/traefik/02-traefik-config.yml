@@ -13,8 +13,10 @@ data:
         address: ":80"
       dashboard:
         address: ":8081"
-      user-service:
+      user-port:
         address: ":8100"
+      auth-port:
+        address: ":9000"
     providers:
       kubernetesIngress: {}
     log:
