@@ -39,15 +39,18 @@ public class QnAboardController {
     @GetMapping("/list")
     @Operation(summary = "QnA 리스트를 불러옵니다.",
             parameters = {
+                    @Parameter(name = "type", description = "구분", required = true),
                     @Parameter(name = "token", description = "인증 토큰", required = true),
                     @Parameter(name = "pageNum", description = "페이지 번호", required = true),
                     @Parameter(name = "size", description = "페이지 크기", required = false)
             })
     public ResponseEntity<QnAboardPageResponseDto> qetlist(String token,
+                                                           @RequestParam(name = "type", defaultValue = "구분") String type,
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
 
+        System.out.println("type"+type);
         System.out.println("pagenum" + pageNum );
         System.out.println("size" + size );
 //        if (token == null) {
@@ -59,15 +62,17 @@ public class QnAboardController {
 
         System.out.println("토큰으로 불러온 유저 정보 " + userReqDto);
 
+        QnAboardPageResponseDto responseDto;
+
         if (userReqDto.getRole().equals("ROLE_STUDENT")) {
 
-            QnAboardPageResponseDto studentQnAList =
-                    qnAboardService.qnAstudentPage(token, PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(studentQnAList);
+            responseDto =
+                    qnAboardService.qnAstudentPageWithType(type, token, PageUtil.getPageable(pageNum, size));
+            return ResponseEntity.ok(responseDto);
         } else {
-            QnAboardPageResponseDto qnAboardPageResponseDto =
-                    qnAboardService.qnAPage(PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(qnAboardPageResponseDto);
+            responseDto =
+                    responseDto = qnAboardService.qnAPageWithType(type, PageUtil.getPageable(pageNum, size));
+            return ResponseEntity.ok(responseDto);
         }
     }
 

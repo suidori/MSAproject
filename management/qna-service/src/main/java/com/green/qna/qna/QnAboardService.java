@@ -65,6 +65,26 @@ public class QnAboardService {
     }
 
 
+    // 학생 사용자 리스트 조회
+    public QnAboardPageResponseDto qnAstudentPageWithType(String type, String token, Pageable pageable) {
+        if ("구분".equals(type)) {
+            return qnARepository.findAllByStudent(token, pageable);
+        } else {
+            return qnARepository.findByTypeAndStudent(type, token, pageable);
+        }
+    }
+
+    // 관리자 및 선생님 리스트 조회
+    public QnAboardPageResponseDto qnAPageWithType(String type, Pageable pageable) {
+        if ("구분".equals(type)) {
+            return qnARepository.findAll(pageable);
+        } else {
+            return qnARepository.findByType(type, pageable);
+        }
+    }
+
+
+
     public QnAboardPageResponseDto qnAPage(Pageable pageable) {
 
         Page<QnAboard> page = qnAboardRepository.findAll(pageable);

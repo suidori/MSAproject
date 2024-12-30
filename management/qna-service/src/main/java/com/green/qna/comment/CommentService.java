@@ -32,6 +32,7 @@ public class CommentService {
                 .qnaboard(qnAboard)
                 .wdate(LocalDateTime.now())
                 .uuid(userReqDto.getUuid())
+                .userid(userReqDto.getUserid())
                 .name(userReqDto.getName())
                 .role(userReqDto.getRole())
                .build();
