@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qna-service-deployment
-  namespace: msa-namespace  # 네임스페이스 지정
+#  namespace: msa-namespace  # 네임스페이스 지정
 spec:
   replicas: 3  # 파드 수
   selector:
@@ -24,7 +24,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: mysecretkey
             - name: USER_SERVICE
-              value: "http://user-service.msa-namespace.svc.cluster.local:8100"
+              value: "http://user-service.default.svc.cluster.local:8100"
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
               valueFrom:
                 configMapKeyRef:
