@@ -31,8 +31,10 @@ spec:
               containerPort: 80
             - name: dashboard
               containerPort: 8080
-            - name: user-service
+            - name: user-port
               containerPort: 8100
+            - name: auth-port
+              containerPort: 9000
       volumes:
         - name: traefik-config
           configMap:

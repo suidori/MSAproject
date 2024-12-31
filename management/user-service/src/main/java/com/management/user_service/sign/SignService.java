@@ -30,7 +30,7 @@ public class SignService {
     public String generateToken(String uuid, String role) {
 
         // auth-service의 엔드포인트 설정
-        String authServiceUrl = "http://auth-service.msa-namespace.svc.cluster.local:9000/auth/generate";
+        String authServiceUrl = "http://auth-service.default.svc.cluster.local:9000/auth/generate";
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -59,7 +59,7 @@ public class SignService {
 
 
     public String validateToken(String token) {
-        String authServiceUrl = "http://auth-service.msa-namespace.svc.cluster.local:9000/auth/validate";
+        String authServiceUrl = "http://auth-service.default.svc.cluster.local:9000/auth/validate";
 
         // 헤더에 Authorization 추가
         HttpHeaders headers = new HttpHeaders();
