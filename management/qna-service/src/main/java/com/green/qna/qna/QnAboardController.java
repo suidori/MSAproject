@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +50,7 @@ public class QnAboardController {
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
-
-        System.out.println("type"+type);
+        System.out.println("type" + type);
         System.out.println("pagenum" + pageNum );
         System.out.println("size" + size );
 //        if (token == null) {
@@ -59,22 +59,19 @@ public class QnAboardController {
 
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
-
-        System.out.println("토큰으로 불러온 유저 정보 " + userReqDto);
+        Pageable pageable = PageUtil.getPageable(pageNum, size);
 
         QnAboardPageResponseDto responseDto;
 
-        if (userReqDto.getRole().equals("ROLE_STUDENT")) {
-
-            responseDto =
-                    qnAboardService.qnAstudentPageWithType(type, token, PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(responseDto);
+        if ("ROLE_STUDENT".equals(userReqDto.getRole())) {
+            responseDto = qnAboardService.qnAstudentPageWithType(type, token, pageable);
         } else {
-            responseDto =
-                    responseDto = qnAboardService.qnAPageWithType(type, PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(responseDto);
+            responseDto = qnAboardService.qnAPageWithType(type, pageable);
         }
+
+        return ResponseEntity.ok(responseDto);
     }
+
 
     @PostMapping("/save")
     @Operation(summary = "QnA를 저장합니다.")

@@ -9,21 +9,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
 
+    // 기본적인 페이징 처리
+    Page<QnAboard> findAll(Pageable pageable);
+
     Page<QnAboard> findByuserid(String userid, Pageable pageable);
 
     Page<QnAboard> findByuuid(String uuid, Pageable pageable);
 
-    // 학생 사용자 - 전체
-    Page<QnAboard> findAllByStudent(String token, Pageable pageable);
 
-    // 학생 사용자 - 타입별 필터
-    Page<QnAboard> findByTypeAndStudent(String type, String token, Pageable pageable);
-
-    // 관리자 및 선생님 - 전체
-    Page<QnAboard> findAll(Pageable pageable);
-
-    // 관리자 및 선생님 - 타입별 필터
-    Page<QnAboard> findByType(String type, Pageable pageable);
 
     // 학생이 본인 작성 글만 검색
     @Query("SELECT q FROM QnAboard q WHERE q.uuid = :uuid AND " +
@@ -39,4 +32,23 @@ public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
             "LOWER(q.content) LIKE LOWER(CONCAT('%', :query, '%'))")
     Page<QnAboard> searchAll(@Param("query") String query, Pageable pageable);
 
+
+
+    // 학생용
+
+
+    @Query("SELECT q FROM QnAboard q WHERE q.type = :type AND q.uuid = :uuid")
+    Page<QnAboard> findByTypeAndStudent(@Param("type") String type, @Param("uuid") String uuid, Pageable pageable);
+
+    // 관리자 및 선생용
+
+    Page<QnAboard> findByType(String type, Pageable pageable);
 }
+
+
+
+
+
+
+
+
