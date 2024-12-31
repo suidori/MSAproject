@@ -68,18 +68,18 @@ public class QnAboardService {
     // 학생 사용자 리스트 조회
     public QnAboardPageResponseDto qnAstudentPageWithType(String type, String token, Pageable pageable) {
         if ("구분".equals(type)) {
-            return qnARepository.findAllByStudent(token, pageable);
+            return qnAboardRepository.findAllByStudent(token, pageable);
         } else {
-            return qnARepository.findByTypeAndStudent(type, token, pageable);
+            return qnAboardRepository.findByTypeAndStudent(type, token, pageable);
         }
     }
 
     // 관리자 및 선생님 리스트 조회
     public QnAboardPageResponseDto qnAPageWithType(String type, Pageable pageable) {
         if ("구분".equals(type)) {
-            return qnARepository.findAll(pageable);
+            return qnAboardRepository.findAll(pageable);
         } else {
-            return qnARepository.findByType(type, pageable);
+            return qnAboardRepository.findByType(type, pageable);
         }
     }
 
