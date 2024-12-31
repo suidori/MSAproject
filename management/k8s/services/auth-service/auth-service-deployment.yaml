@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-service-deployment
-  namespace: msa-namespace  # 네임스페이스 지정
+#  namespace: msa-namespace  # 네임스페이스 지정
 spec:
   replicas: 3  # 파드 수
   selector:
