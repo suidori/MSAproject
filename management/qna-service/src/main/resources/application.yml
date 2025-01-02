@@ -109,4 +109,5 @@ management:
 spring.jwt:
   secret: mySuperSecretKey
 
-user-service: http://192.168.0.103:8100/
+#user-service: http://192.168.0.103:8100/
+user-service: https://greencomart.o-r.kr/

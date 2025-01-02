@@ -79,7 +79,11 @@ public class QnAboardController {
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
 
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        System.out.println("요기로 오냐"+token);
+
+        UserReqDto userReqDto = userFeignClient.getUser(token);
+
+        System.out.println(userReqDto);
 
 //        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
         QnAboard qnAboard = qnAboardService.save(token ,qnAboardReqDto ,userReqDto);
