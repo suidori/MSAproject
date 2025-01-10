@@ -48,9 +48,6 @@ public class QnAboardService {
     }
 
 
-
-
-
     //서치 서비스 테스트
     public QnAboardPageResponseDto mapToPageResponseDto(Page<QnAboard> page) {
         List<QnAboardResponseDto> dtoList = page.getContent().stream()
@@ -66,27 +63,6 @@ public class QnAboardService {
     }
 
 
-    public QnAboardPageResponseDto qnAPage(Pageable pageable) {
-
-        Page<QnAboard> page = qnAboardRepository.findAll(pageable);
-
-        return mapToQuestionResponsePageDto(page);
-    }
-
-
-    public QnAboardPageResponseDto qnAstudentPage(String token, Pageable pageable) {
-
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
-
-//        String userid = userReqDto.getUserid();
-        String uuid = userReqDto.getUuid();
-
-        Page<QnAboard> page = qnAboardRepository.findByuuid(uuid, pageable);
-
-        return mapToQuestionResponsePageDto(page);
-    }
-
-
     private QnAboardPageResponseDto mapToQuestionResponsePageDto(Page<QnAboard> page) {
         List<QnAboardResponseDto> dtoList = page.getContent().stream()
                 .map(this::convertToQnAboardResponseDto)
@@ -99,9 +75,6 @@ public class QnAboardService {
                 .size(page.getSize())
                 .build();
     }
-
-
-
 
 
     // QnAboard를 QnAboardResponseDto로 변환하는 메서드 분리
@@ -140,9 +113,6 @@ public class QnAboardService {
         qnAboardRepository.save(qnAboard);
         return qnAboard;
     }
-
-
-
 
 
     public QnAboardPageResponseDto qnAPageWithType(String type, Pageable pageable) {
