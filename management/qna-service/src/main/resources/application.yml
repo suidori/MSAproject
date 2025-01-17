@@ -77,9 +77,10 @@ logging:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.0.103:30306/qna?serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://192.168.0.9:30306/qna?serverTimezone=Asia/Seoul
     username: root
     password: mysecretkey
+#    password: 1234
   jpa:
     hibernate:
       ddl-auto: update
