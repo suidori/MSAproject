@@ -15,6 +15,8 @@ public class CommentResponseDto {
 
     private String uuid;
 
+    private String userid;
+
     private String name;
 
     private String role;

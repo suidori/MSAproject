@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,15 +40,17 @@ public class QnAboardController {
     @GetMapping("/list")
     @Operation(summary = "QnA 리스트를 불러옵니다.",
             parameters = {
+                    @Parameter(name = "type", description = "구분", required = true),
                     @Parameter(name = "token", description = "인증 토큰", required = true),
                     @Parameter(name = "pageNum", description = "페이지 번호", required = true),
                     @Parameter(name = "size", description = "페이지 크기", required = false)
             })
     public ResponseEntity<QnAboardPageResponseDto> qetlist(String token,
+                                                           @RequestParam(name = "type", defaultValue = "구분") String type,
                                                         @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
                                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         System.out.println("프론트에서 준 token " + token);
-
+        System.out.println("type" + type);
         System.out.println("pagenum" + pageNum );
         System.out.println("size" + size );
 //        if (token == null) {
@@ -56,20 +59,19 @@ public class QnAboardController {
 
         // 선생이거나 매니저면.. 모든 select...
         UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        Pageable pageable = PageUtil.getPageable(pageNum, size);
 
-        System.out.println("토큰으로 불러온 유저 정보 " + userReqDto);
+        QnAboardPageResponseDto responseDto;
 
-        if (userReqDto.getRole().equals("ROLE_STUDENT")) {
-
-            QnAboardPageResponseDto studentQnAList =
-                    qnAboardService.qnAstudentPage(token, PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(studentQnAList);
+        if ("ROLE_STUDENT".equals(userReqDto.getRole())) {
+            responseDto = qnAboardService.qnAstudentPageWithType(type, token, pageable);
         } else {
-            QnAboardPageResponseDto qnAboardPageResponseDto =
-                    qnAboardService.qnAPage(PageUtil.getPageable(pageNum, size));
-            return ResponseEntity.ok(qnAboardPageResponseDto);
+            responseDto = qnAboardService.qnAPageWithType(type, pageable);
         }
+
+        return ResponseEntity.ok(responseDto);
     }
+
 
     @PostMapping("/save")
     @Operation(summary = "QnA를 저장합니다.")
@@ -77,7 +79,11 @@ public class QnAboardController {
             @RequestHeader(name = "Authorization") String token,
             @Valid @RequestBody QnAboardReqDto qnAboardReqDto) {
 
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        System.out.println("요기로 오냐"+token);
+
+        UserReqDto userReqDto = userFeignClient.getUser(token);
+
+        System.out.println(userReqDto);
 
 //        QnAboard qnAboard = qnAboardService.save(token.split("Bearer")[1],qnAboardReqDto);
         QnAboard qnAboard = qnAboardService.save(token ,qnAboardReqDto ,userReqDto);

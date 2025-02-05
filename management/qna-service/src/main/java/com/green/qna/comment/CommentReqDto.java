@@ -21,6 +21,8 @@ public class CommentReqDto {
 
     private String uuid;
 
+    private String userid;
+
     private String name;
 
     private String role;

@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 public class QnAboardService {
 
+
     private final ModelMapper modelMapper;
     private final QnAboardRepository qnAboardRepository;
     private final UserFeignClient userFeignClient;
@@ -47,9 +48,6 @@ public class QnAboardService {
     }
 
 
-
-
-
     //서치 서비스 테스트
     public QnAboardPageResponseDto mapToPageResponseDto(Page<QnAboard> page) {
         List<QnAboardResponseDto> dtoList = page.getContent().stream()
@@ -65,49 +63,18 @@ public class QnAboardService {
     }
 
 
-    public QnAboardPageResponseDto qnAPage(Pageable pageable) {
-
-        Page<QnAboard> page = qnAboardRepository.findAll(pageable);
-
-        return mapToQuestionResponsePageDto(page);
-    }
-
-
-    public QnAboardPageResponseDto qnAstudentPage(String token, Pageable pageable) {
-
-        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
-
-//        String userid = userReqDto.getUserid();
-        String uuid = userReqDto.getUuid();
-
-        Page<QnAboard> page = qnAboardRepository.findByuuid(uuid, pageable);
-
-        return mapToQuestionResponsePageDto(page);
-    }
-
-
     private QnAboardPageResponseDto mapToQuestionResponsePageDto(Page<QnAboard> page) {
-        // DTO 리스트 변환
         List<QnAboardResponseDto> dtoList = page.getContent().stream()
                 .map(this::convertToQnAboardResponseDto)
                 .toList();
 
-        // 빈 페이지 처리 (필요에 따라 메시지나 다른 처리를 할 수 있음)
-        if (dtoList.isEmpty()) {
-            log.info("No data found in the page.");
-        }
-
-        // 페이지 응답 DTO 생성
-        QnAboardPageResponseDto responseDto = new QnAboardPageResponseDto();
-        responseDto.setList(dtoList);
-        responseDto.setTotalElements(page.getTotalElements());
-        responseDto.setTotalPages(page.getTotalPages());
-        responseDto.setSize(page.getSize());
-
-        return responseDto;
+        return QnAboardPageResponseDto.builder()
+                .list(dtoList)
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .size(page.getSize())
+                .build();
     }
-
-
 
 
     // QnAboard를 QnAboardResponseDto로 변환하는 메서드 분리
@@ -148,4 +115,45 @@ public class QnAboardService {
     }
 
 
+    public QnAboardPageResponseDto qnAPageWithType(String type, Pageable pageable) {
+        Page<QnAboard> page;
+
+        if ("구분".equals(type)) {
+            page = qnAboardRepository.findAll(pageable);
+        } else {
+            page = qnAboardRepository.findByType(type, pageable);
+        }
+
+        // 비어 있는 페이지 처리
+        if (page == null || page.isEmpty()) {
+            page = Page.empty(pageable); // 빈 페이지 생성
+        }
+
+        return mapToQuestionResponsePageDto(page);
+    }
+
+    public QnAboardPageResponseDto qnAstudentPageWithType(String type, String token, Pageable pageable) {
+        UserReqDto userReqDto = userFeignClient.getUser("Bearer " + token);
+        String uuid = userReqDto.getUuid();
+
+        Page<QnAboard> page;
+
+        if ("구분".equals(type)) {
+            page = qnAboardRepository.findByuuid(uuid, pageable);
+        } else {
+            page = qnAboardRepository.findByTypeAndStudent(type, uuid, pageable);
+        }
+
+        // 비어 있는 페이지 처리
+        if (page == null || page.isEmpty()) {
+            page = Page.empty(pageable); // 빈 페이지 생성
+        }
+
+        return mapToQuestionResponsePageDto(page);
+    }
+
 }
+
+
+
+

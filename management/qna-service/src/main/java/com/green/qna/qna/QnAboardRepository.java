@@ -32,4 +32,22 @@ public interface QnAboardRepository extends JpaRepository<QnAboard, Long> {
             "LOWER(q.content) LIKE LOWER(CONCAT('%', :query, '%'))")
     Page<QnAboard> searchAll(@Param("query") String query, Pageable pageable);
 
+
+
+    // 학생용
+
+    @Query("SELECT q FROM QnAboard q WHERE q.type = :type AND q.uuid = :uuid")
+    Page<QnAboard> findByTypeAndStudent(@Param("type") String type, @Param("uuid") String uuid, Pageable pageable);
+
+    // 관리자 및 선생용
+
+    Page<QnAboard> findByType(String type, Pageable pageable);
 }
+
+
+
+
+
+
+
+
