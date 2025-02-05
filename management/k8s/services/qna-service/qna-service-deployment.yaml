@@ -4,7 +4,7 @@ metadata:
   name: qna-service-deployment
 #  namespace: msa-namespace  # 네임스페이스 지정
 spec:
-  replicas: 3  # 파드 수
+  replicas: 1  # 파드 수
   selector:
     matchLabels:
       app: qna-service
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: qna-service-container
-          image: suidori/qna-service:msa.k8.01 # 서비스가 사용할 도커 이미지
+          image: suidori/qna-service:msa.k8.02 # 서비스가 사용할 도커 이미지
           env:
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:mariadb://mariadb-qna-service.mariadb-namespace.svc.cluster.local:3306/qna?serverTimezone=Asia/Seoul"

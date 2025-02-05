@@ -1,0 +1,6 @@
+
+#이미지 생성
+docker build -t suidori/qna-service:msa.k8.02 .
+
+#이미지 dockerhub 업로드 명령어
+docker push suidori/qna-service:msa.k8.02

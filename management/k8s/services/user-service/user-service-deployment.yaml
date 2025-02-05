@@ -4,7 +4,7 @@ metadata:
   name: user-service-deployment
 #  namespace: msa-namespace  # 네임스페이스 지정
 spec:
-  replicas: 3  # 파드 수
+  replicas: 1  # 파드 수
   selector:
     matchLabels:
       app: user-service
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: user-service-container
-          image: suidori/user-service:msa.k8.12 # 서비스가 사용할 도커 이미지
+          image: suidori/user-service:msa.k8.13 # 서비스가 사용할 도커 이미지
           env:
             - name: DB_URL
               value: "jdbc:mariadb://mariadb-service.mariadb-namespace.svc.cluster.local:3306/education?serverTimezone=Asia/Seoul"
