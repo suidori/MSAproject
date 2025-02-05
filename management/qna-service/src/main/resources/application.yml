@@ -83,7 +83,8 @@ spring:
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: create
+      ddl-auto: update
     properties:
       database-platform: org.hibernate.dialect.MariaDB103Dialect
     show-sql: true

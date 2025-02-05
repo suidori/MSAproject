@@ -126,7 +126,7 @@ public class QnAboardController {
 
         UserReqDto userReqDto = userFeignClient.getUser(token);
 
-        if(userReqDto.getUuid().equals(qnAboard.getUuid())){
+        if(userReqDto.getUserid().equals(qnAboard.getUserid())){
 
             qnAboardService.check(qnAboard);
         }else {
